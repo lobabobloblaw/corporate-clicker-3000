@@ -134,7 +134,6 @@ export function DiscordProvider({ children }: DiscordProviderProps) {
         console.log('[Discord Auth] Starting authorization...')
 
         // For Discord Activities, authorize with minimal scopes
-        // This will show Discord's permission modal to the user
         const { code } = await sdk.commands.authorize({
           client_id: import.meta.env.VITE_DISCORD_CLIENT_ID,
           response_type: 'code',
@@ -148,34 +147,48 @@ export function DiscordProvider({ children }: DiscordProviderProps) {
 
         console.log('[Discord Auth] Got authorization code:', code.substring(0, 10) + '...')
 
-        // For a client-only app, we can use the SDK's instance info
-        // The SDK context includes participant info when running as an Activity
-        const instanceParticipants = (sdk as any).instanceParticipants
-        const currentUser = (sdk as any).currentUser
+        // Try to get participant information from the SDK
+        try {
+          const result = await sdk.commands.getInstanceConnectedParticipants()
+          console.log('[Discord Auth] Participants result:', result)
 
-        console.log('[Discord Auth] Checking SDK for user info...', { instanceParticipants, currentUser })
+          // The result has a participants array
+          const participants = (result as any).participants || []
 
-        // If SDK has user info, use it
-        if (currentUser) {
-          user = {
-            id: currentUser.id,
-            username: currentUser.username,
-            discriminator: currentUser.discriminator || '0',
-            avatar: currentUser.avatar || null,
-            bot: false
+          // Find the current user (the one who authorized)
+          if (participants && participants.length > 0) {
+            // Usually the first participant or we can check against some user ID
+            const currentParticipant = participants[0]
+            user = {
+              id: currentParticipant.id || code,
+              username: currentParticipant.username || currentParticipant.global_name || 'Player',
+              discriminator: '0',
+              avatar: currentParticipant.avatar || null,
+              bot: false
+            }
+            console.log('[Discord Auth] Using participant info:', user)
+          } else {
+            // Fallback if no participants found
+            user = {
+              id: code,
+              username: 'Player',
+              discriminator: '0',
+              avatar: null,
+              bot: false
+            }
+            console.log('[Discord Auth] No participants, using fallback')
           }
-        } else {
-          // Fallback: use a placeholder that indicates authorization succeeded
+        } catch (error) {
+          console.error('[Discord Auth] Failed to get participants:', error)
+          // Fallback user
           user = {
-            id: code, // Use code as temporary ID
-            username: 'DiscordUser',
+            id: code,
+            username: 'Player',
             discriminator: '0',
             avatar: null,
             bot: false
           }
         }
-
-        console.log('[Discord Auth] Using user:', user)
       }
 
       setAuth({

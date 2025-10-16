@@ -150,7 +150,7 @@ function CorpClickerInner() {
   }, [money])
 
   return (
-    <div className="h-screen bg-discord-bg-primary text-discord-text-normal font-sans overflow-hidden flex flex-col">
+    <div className="h-screen max-h-screen bg-discord-bg-primary text-discord-text-normal font-sans overflow-hidden flex flex-col touch-action-none">
 
       {/* Toast Notification - Top Right */}
       {showToast && (
@@ -194,34 +194,34 @@ function CorpClickerInner() {
       )}
 
       {/* Compact Header */}
-      <div className="bg-discord-bg-secondary px-4 py-2.5 border-b border-discord-border">
+      <div className="bg-discord-bg-secondary px-3 md:px-4 py-2 md:py-2.5 border-b border-discord-border flex-shrink-0">
         <div className="flex items-center justify-between max-w-7xl mx-auto">
           <div>
-            <h1 className="text-xl md:text-2xl font-black text-white">
+            <h1 className="text-lg md:text-2xl font-black text-white leading-tight">
               CORPORATE CLICKER 3000™
             </h1>
             {auth.user && (
-              <p className="text-xs text-discord-green font-semibold flex items-center gap-1.5">
-                <span className="text-base">👑</span>
+              <p className="text-[10px] md:text-xs text-discord-green font-semibold flex items-center gap-1">
+                <span className="text-sm md:text-base">👑</span>
                 CEO: {auth.user.username}
               </p>
             )}
           </div>
-          <p className="text-xs md:text-sm text-discord-text-muted hidden sm:block">
-            <span className="text-discord-yellow font-bold">{currentBuzzword}</span> your business! 🚀
+          <p className="text-[10px] md:text-sm text-discord-text-muted hidden sm:block">
+            <span className="text-discord-yellow font-bold">{currentBuzzword}</span> 🚀
           </p>
         </div>
       </div>
 
       {/* Main Content - No Scroll */}
       <div className="flex-1 overflow-hidden">
-        <div className="h-full max-w-7xl mx-auto p-3 md:p-4">
+        <div className="h-full max-w-7xl mx-auto p-2 md:p-4">
 
           {/* Desktop: Two Column, Mobile: Single Column */}
-          <div className="h-full grid grid-cols-1 md:grid-cols-2 gap-3 md:gap-4">
+          <div className="h-full grid grid-cols-1 md:grid-cols-2 gap-2 md:gap-4">
 
             {/* LEFT COLUMN - Stats, Income, Upgrades */}
-            <div className="flex flex-col gap-3 md:h-full overflow-hidden">
+            <div className="flex flex-col gap-2 md:gap-3 md:h-full overflow-hidden">
 
               {/* Stats Dashboard - Compact */}
               <div className="grid grid-cols-2 gap-2">
@@ -302,16 +302,16 @@ function CorpClickerInner() {
             </div>
 
             {/* RIGHT COLUMN - Clicker, Achievements, Tips */}
-            <div className="flex flex-col gap-3 md:h-full">
+            <div className="flex flex-col gap-2 md:gap-3 md:h-full">
 
               {/* Main Clicker Button */}
-              <div className="bg-discord-bg-secondary rounded-lg p-4 flex items-center justify-center">
+              <div className="bg-discord-bg-secondary rounded-lg p-3 md:p-4 flex items-center justify-center">
                 <button
                   onClick={handleClick}
-                  className="bg-gradient-to-br from-discord-blurple to-purple-600 hover:from-blue-500 hover:to-purple-500 rounded-full w-40 h-40 md:w-44 md:h-44 shadow-2xl active:scale-95 transition-all flex flex-col items-center justify-center"
+                  className="bg-gradient-to-br from-discord-blurple to-purple-600 hover:from-blue-500 hover:to-purple-500 rounded-full w-32 h-32 md:w-44 md:h-44 shadow-2xl active:scale-95 transition-all flex flex-col items-center justify-center"
                 >
-                  <div className="text-6xl md:text-7xl mb-1">💵</div>
-                  <div className="text-white font-bold text-base">CLICK ME!</div>
+                  <div className="text-5xl md:text-7xl mb-1">💵</div>
+                  <div className="text-white font-bold text-sm md:text-base">CLICK ME!</div>
                   <div className="text-discord-yellow font-semibold text-xs">+${clickPower}</div>
                 </button>
               </div>
