@@ -114,21 +114,22 @@ export function DiscordProvider({ children }: DiscordProviderProps) {
     }))
 
     try {
-      // Check if we're using DiscordSDKMock (local development)
-      const isInDiscord = window.parent !== window
+      // Check if we're using DiscordSDKMock (more reliable than iframe detection)
+      const isUsingMockSDK = sdk instanceof DiscordSDKMock
 
       let user: DiscordUser
 
       console.log('[Discord Auth] Environment check:', {
-        isInDiscord,
+        isUsingMockSDK,
+        sdkType: sdk?.constructor.name,
         windowParent: window.parent,
         window: window,
         userAgent: navigator.userAgent
       })
 
-      if (!isInDiscord) {
+      if (isUsingMockSDK) {
         // Local development with DiscordSDKMock - use mock data
-        console.log('[Discord Auth] Using mock user data for local development (not in iframe)')
+        console.log('[Discord Auth] Using mock user data (DiscordSDKMock detected)')
         user = {
           id: '123456789012345678',
           username: 'TestUser',

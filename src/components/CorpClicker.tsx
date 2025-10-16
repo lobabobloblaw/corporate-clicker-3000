@@ -211,55 +211,55 @@ function CorpClickerInner() {
             <p className="text-[10px] md:text-sm text-discord-text-muted hidden sm:block">
               <span className="text-discord-yellow font-bold">{currentBuzzword}</span> 🚀
             </p>
-            <p className="text-[8px] text-discord-text-muted opacity-50">v2.1</p>
+            <p className="text-[8px] text-discord-text-muted opacity-50">v2.2</p>
           </div>
         </div>
       </div>
 
       {/* Main Content - No Scroll */}
       <div className="flex-1 overflow-hidden">
-        <div className="h-full max-w-7xl mx-auto p-2 md:p-4">
+        <div className="h-full max-w-7xl mx-auto p-1 md:p-4">
 
           {/* Desktop: Two Column, Mobile: Single Column */}
-          <div className="h-full grid grid-cols-1 md:grid-cols-2 gap-2 md:gap-4">
+          <div className="h-full grid grid-cols-1 md:grid-cols-2 gap-1.5 md:gap-4">
 
             {/* LEFT COLUMN - Stats, Income, Upgrades */}
-            <div className="flex flex-col gap-2 md:gap-3 md:h-full overflow-hidden">
+            <div className="flex flex-col gap-1.5 md:gap-3 md:h-full overflow-hidden">
 
-              {/* Stats Dashboard - Compact */}
-              <div className="grid grid-cols-2 gap-1.5 md:gap-2">
+              {/* Stats Dashboard - Compact Single Row on Mobile */}
+              <div className="grid grid-cols-4 md:grid-cols-2 gap-1 md:gap-2">
                 {/* Money */}
-                <div className="bg-discord-bg-secondary rounded-lg p-2 md:p-2.5 border-l-4 border-discord-green">
-                  <div className="text-base md:text-lg mb-0.5">💰</div>
-                  <div className="text-[9px] md:text-[10px] text-discord-text-muted font-medium uppercase tracking-wide">Money</div>
-                  <div className="text-base md:text-lg font-bold text-white">${money.toFixed(0)}</div>
+                <div className="bg-discord-bg-secondary rounded-lg p-1.5 md:p-2.5 border-l-2 md:border-l-4 border-discord-green">
+                  <div className="text-sm md:text-lg mb-0.5">💰</div>
+                  <div className="text-[8px] md:text-[10px] text-discord-text-muted font-medium uppercase tracking-wide hidden md:block">Money</div>
+                  <div className="text-xs md:text-lg font-bold text-white">${money.toFixed(0)}</div>
                 </div>
 
                 {/* Synergy */}
-                <div className="bg-discord-bg-secondary rounded-lg p-2 md:p-2.5 border-l-4 border-discord-fuchsia">
-                  <div className="text-base md:text-lg mb-0.5">🔥</div>
-                  <div className="text-[9px] md:text-[10px] text-discord-text-muted font-medium uppercase tracking-wide">Synergy</div>
-                  <div className="text-base md:text-lg font-bold text-white">{synergy.toFixed(0)}%</div>
+                <div className="bg-discord-bg-secondary rounded-lg p-1.5 md:p-2.5 border-l-2 md:border-l-4 border-discord-fuchsia">
+                  <div className="text-sm md:text-lg mb-0.5">🔥</div>
+                  <div className="text-[8px] md:text-[10px] text-discord-text-muted font-medium uppercase tracking-wide hidden md:block">Synergy</div>
+                  <div className="text-xs md:text-lg font-bold text-white">{synergy.toFixed(0)}%</div>
                 </div>
 
                 {/* Electrolytes */}
-                <div className="bg-discord-bg-secondary rounded-lg p-2 md:p-2.5 border-l-4 border-discord-yellow">
-                  <div className="text-base md:text-lg mb-0.5">⚡</div>
-                  <div className="text-[9px] md:text-[10px] text-discord-text-muted font-medium uppercase tracking-wide">Electrolytes</div>
-                  <div className="text-base md:text-lg font-bold text-white">{electrolytes.toFixed(0)}%</div>
+                <div className="bg-discord-bg-secondary rounded-lg p-1.5 md:p-2.5 border-l-2 md:border-l-4 border-discord-yellow">
+                  <div className="text-sm md:text-lg mb-0.5">⚡</div>
+                  <div className="text-[8px] md:text-[10px] text-discord-text-muted font-medium uppercase tracking-wide hidden md:block">Electrolytes</div>
+                  <div className="text-xs md:text-lg font-bold text-white">{electrolytes.toFixed(0)}%</div>
                 </div>
 
                 {/* Employees */}
-                <div className="bg-discord-bg-secondary rounded-lg p-2 md:p-2.5 border-l-4 border-discord-blurple">
-                  <div className="text-base md:text-lg mb-0.5">👔</div>
-                  <div className="text-[9px] md:text-[10px] text-discord-text-muted font-medium uppercase tracking-wide">Employees</div>
-                  <div className="text-base md:text-lg font-bold text-white">{employees}</div>
+                <div className="bg-discord-bg-secondary rounded-lg p-1.5 md:p-2.5 border-l-2 md:border-l-4 border-discord-blurple">
+                  <div className="text-sm md:text-lg mb-0.5">👔</div>
+                  <div className="text-[8px] md:text-[10px] text-discord-text-muted font-medium uppercase tracking-wide hidden md:block">Employees</div>
+                  <div className="text-xs md:text-lg font-bold text-white">{employees}</div>
                 </div>
               </div>
 
-              {/* Income Display - Compact */}
-              <div className="bg-discord-bg-secondary rounded-lg p-2 md:p-2.5">
-                <div className="flex justify-between items-center text-xs">
+              {/* Income Display - Hidden on Mobile */}
+              <div className="hidden md:flex bg-discord-bg-secondary rounded-lg p-2 md:p-2.5">
+                <div className="flex justify-between items-center text-xs w-full">
                   <div className="flex items-center gap-1.5">
                     <span className="text-discord-green">💸</span>
                     <span className="text-discord-text-normal font-semibold">
@@ -275,8 +275,8 @@ function CorpClickerInner() {
                 </div>
               </div>
 
-              {/* Upgrades - Scrollable with Fixed Height */}
-              <div className="bg-discord-bg-secondary rounded-lg p-2 md:p-3 max-h-[250px] md:flex-1 flex flex-col overflow-hidden">
+              {/* Upgrades - Scrollable with Reduced Height on Mobile */}
+              <div className="bg-discord-bg-secondary rounded-lg p-2 md:p-3 max-h-[160px] md:flex-1 flex flex-col overflow-hidden">
                 <h2 className="text-sm md:text-base font-bold text-white mb-1.5 md:mb-2 flex items-center gap-1.5">
                   <span>🛒</span>
                   <span>Upgrades</span>
@@ -305,22 +305,22 @@ function CorpClickerInner() {
             </div>
 
             {/* RIGHT COLUMN - Clicker, Achievements, Tips */}
-            <div className="flex flex-col gap-2 md:gap-3 md:h-full">
+            <div className="flex flex-col gap-1.5 md:gap-3 md:h-full">
 
-              {/* Main Clicker Button */}
-              <div className="bg-discord-bg-secondary rounded-lg p-2 md:p-4 flex items-center justify-center flex-shrink-0">
+              {/* Main Clicker Button - Smaller on Mobile */}
+              <div className="bg-discord-bg-secondary rounded-lg p-1.5 md:p-4 flex items-center justify-center flex-shrink-0">
                 <button
                   onClick={handleClick}
-                  className="bg-gradient-to-br from-discord-blurple to-purple-600 hover:from-blue-500 hover:to-purple-500 rounded-full w-32 h-32 md:w-44 md:h-44 shadow-2xl active:scale-95 transition-all flex flex-col items-center justify-center"
+                  className="bg-gradient-to-br from-discord-blurple to-purple-600 hover:from-blue-500 hover:to-purple-500 rounded-full w-28 h-28 md:w-44 md:h-44 shadow-2xl active:scale-95 transition-all flex flex-col items-center justify-center"
                 >
-                  <div className="text-5xl md:text-7xl mb-1">💵</div>
-                  <div className="text-white font-bold text-sm md:text-base">CLICK ME!</div>
-                  <div className="text-discord-yellow font-semibold text-xs">+${clickPower}</div>
+                  <div className="text-4xl md:text-7xl mb-1">💵</div>
+                  <div className="text-white font-bold text-xs md:text-base">CLICK ME!</div>
+                  <div className="text-discord-yellow font-semibold text-[10px] md:text-xs">+${clickPower}</div>
                 </button>
               </div>
 
-              {/* Achievements - Compact */}
-              <div className="bg-discord-bg-secondary rounded-lg p-2 md:p-3 max-h-[150px] md:flex-1 overflow-hidden flex flex-col">
+              {/* Achievements - Reduced Height on Mobile */}
+              <div className="bg-discord-bg-secondary rounded-lg p-2 md:p-3 max-h-[80px] md:flex-1 overflow-hidden flex flex-col">
                 <h2 className="text-sm md:text-base font-bold text-white mb-1.5 md:mb-2 flex items-center gap-1.5">
                   <span>🏆</span>
                   <span>Achievements</span>
@@ -345,8 +345,8 @@ function CorpClickerInner() {
                 </div>
               </div>
 
-              {/* Pro Tips - Compact */}
-              <div className="bg-discord-bg-secondary rounded-lg p-2 md:p-3 flex-shrink-0">
+              {/* Pro Tips - Hidden on Mobile */}
+              <div className="hidden md:block bg-discord-bg-secondary rounded-lg p-2 md:p-3 flex-shrink-0">
                 <h3 className="text-xs md:text-sm font-bold text-white mb-1.5 md:mb-2 flex items-center gap-1.5">
                   <span>💡</span>
                   <span>Pro Tips</span>
