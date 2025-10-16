@@ -119,9 +119,16 @@ export function DiscordProvider({ children }: DiscordProviderProps) {
 
       let user: DiscordUser
 
+      console.log('[Discord Auth] Environment check:', {
+        isInDiscord,
+        windowParent: window.parent,
+        window: window,
+        userAgent: navigator.userAgent
+      })
+
       if (!isInDiscord) {
         // Local development with DiscordSDKMock - use mock data
-        console.log('[Discord Auth] Using mock user data for local development')
+        console.log('[Discord Auth] Using mock user data for local development (not in iframe)')
         user = {
           id: '123456789012345678',
           username: 'TestUser',

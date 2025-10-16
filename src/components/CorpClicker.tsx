@@ -207,9 +207,12 @@ function CorpClickerInner() {
               </p>
             )}
           </div>
-          <p className="text-[10px] md:text-sm text-discord-text-muted hidden sm:block">
-            <span className="text-discord-yellow font-bold">{currentBuzzword}</span> 🚀
-          </p>
+          <div className="flex flex-col items-end">
+            <p className="text-[10px] md:text-sm text-discord-text-muted hidden sm:block">
+              <span className="text-discord-yellow font-bold">{currentBuzzword}</span> 🚀
+            </p>
+            <p className="text-[8px] text-discord-text-muted opacity-50">v2.1</p>
+          </div>
         </div>
       </div>
 
