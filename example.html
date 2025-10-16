@@ -1,0 +1,320 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>CORPORATE CLICKER 3000™</title>
+  <script crossorigin src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
+  <script crossorigin src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
+  <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+  <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body>
+  <div id="root"></div>
+  
+  <script type="text/babel">
+    const { useState, useEffect } = React;
+
+    function IdiocracyGame() {
+      const [money, setMoney] = useState(0);
+      const [clickPower, setClickPower] = useState(1);
+      const [synergy, setSynergy] = useState(0);
+      const [electrolytes, setElectrolytes] = useState(100);
+      const [employees, setEmployees] = useState(0);
+      const [buzzwordLevel, setBuzzwordLevel] = useState(1);
+      const [showPopup, setShowPopup] = useState(false);
+      const [showEvent, setShowEvent] = useState(false);
+      const [eventText, setEventText] = useState('');
+      const [achievements, setAchievements] = useState([]);
+      const [autoMoney, setAutoMoney] = useState(0);
+
+      const buzzwords = ['PIVOTING', 'DISRUPTING', 'LEVERAGING', 'OPTIMIZING', 'MONETIZING', 'SYNERGIZING'];
+      const [currentBuzzword, setCurrentBuzzword] = useState(buzzwords[0]);
+
+      // Auto money generation
+      useEffect(() => {
+        const interval = setInterval(() => {
+          setMoney(prev => prev + autoMoney);
+          setSynergy(prev => Math.min(100, prev + employees * 0.1));
+          setElectrolytes(prev => Math.max(0, prev - 0.5));
+        }, 1000);
+        return () => clearInterval(interval);
+      }, [autoMoney, employees]);
+
+      // Random events
+      useEffect(() => {
+        const eventInterval = setInterval(() => {
+          if (Math.random() > 0.9) {
+            const events = [
+              { text: '🎉 CEO TOOK A NAP! PRODUCTIVITY +1000%!', effect: () => setMoney(m => m + 500) },
+              { text: '☢️ NUCLEAR LAUNCH DETECTED! (false alarm)', effect: () => {} },
+              { text: '🍔 FREE BURGER DAY! MORALE BOOSTED!', effect: () => setSynergy(100) },
+              { text: '⚡ ELECTROLYTE SHORTAGE! BUY MORE BRAWNDO!', effect: () => setElectrolytes(20) },
+              { text: '📈 STOCK MARKET WENT UP! (or down idk)', effect: () => setMoney(m => m + Math.random() * 1000) },
+              { text: '🤖 AI BECAME SENTIENT! IT WANTS A RAISE!', effect: () => setMoney(m => m - 100) }
+            ];
+            const event = events[Math.floor(Math.random() * events.length)];
+            setEventText(event.text);
+            setShowEvent(true);
+            event.effect();
+            setTimeout(() => setShowEvent(false), 3000);
+          }
+        }, 5000);
+        return () => clearInterval(eventInterval);
+      }, []);
+
+      // Popup ads
+      useEffect(() => {
+        const popupInterval = setInterval(() => {
+          if (Math.random() > 0.95) setShowPopup(true);
+        }, 10000);
+        return () => clearInterval(popupInterval);
+      }, []);
+
+      // Buzzword rotation
+      useEffect(() => {
+        const buzzInterval = setInterval(() => {
+          setCurrentBuzzword(buzzwords[Math.floor(Math.random() * buzzwords.length)]);
+        }, 2000);
+        return () => clearInterval(buzzInterval);
+      }, []);
+
+      const checkAchievement = (id, name, condition) => {
+        if (condition && !achievements.includes(id)) {
+          setAchievements([...achievements, id]);
+          alert(`🏆 ACHIEVEMENT UNLOCKED: ${name} 🏆`);
+        }
+      };
+
+      const handleClick = () => {
+        setMoney(money + clickPower);
+        setSynergy(Math.min(100, synergy + 1));
+        checkAchievement('first_click', 'FIRST CLICK!', money === 0);
+        checkAchievement('rich', 'KINDA RICH', money > 10000);
+      };
+
+      const upgrades = [
+        { 
+          name: 'BETTER FINGERS', 
+          cost: 50, 
+          effect: () => setClickPower(clickPower + 1),
+          desc: '+1 money per click'
+        },
+        { 
+          name: 'HIRE INTERN', 
+          cost: 100, 
+          effect: () => { setEmployees(employees + 1); setAutoMoney(autoMoney + 1); },
+          desc: '+1 money/sec'
+        },
+        { 
+          name: 'BUY SYNERGY', 
+          cost: 200, 
+          effect: () => { setBuzzwordLevel(buzzwordLevel + 1); setClickPower(clickPower + 5); },
+          desc: '+5 click power'
+        },
+        { 
+          name: 'MORE ELECTROLYTES', 
+          cost: 150, 
+          effect: () => setElectrolytes(100),
+          desc: 'Refill to 100%'
+        },
+        { 
+          name: 'HIRE CEO', 
+          cost: 1000, 
+          effect: () => setAutoMoney(autoMoney + 50),
+          desc: '+50 money/sec (does nothing)'
+        },
+        { 
+          name: 'BLOCKCHAIN', 
+          cost: 5000, 
+          effect: () => { setMoney(money + 10000); checkAchievement('blockchain', 'BLOCKCHAIN MASTER', true); },
+          desc: 'Instant +10000 money'
+        }
+      ];
+
+      const buyUpgrade = (upgrade) => {
+        if (money >= upgrade.cost) {
+          setMoney(money - upgrade.cost);
+          upgrade.effect();
+        }
+      };
+
+      return (
+        <div className="min-h-screen bg-gradient-to-br from-orange-400 via-pink-500 to-purple-600 p-8 font-mono overflow-hidden relative">
+          
+          {/* Random Event Banner */}
+          {showEvent && (
+            <div className="fixed top-20 left-1/2 transform -translate-x-1/2 z-50 animate-bounce">
+              <div className="bg-red-500 border-8 border-yellow-400 p-6 rounded-3xl shadow-2xl">
+                <p className="text-4xl font-black text-white text-center">
+                  {eventText}
+                </p>
+              </div>
+            </div>
+          )}
+
+          {/* Popup Ad */}
+          {showPopup && (
+            <div className="fixed inset-0 bg-black bg-opacity-80 flex items-center justify-center z-50">
+              <div className="bg-gradient-to-r from-yellow-400 to-red-500 p-12 rounded-3xl border-8 border-green-500 max-w-2xl relative transform rotate-3 shadow-2xl animate-pulse">
+                <button 
+                  onClick={() => setShowPopup(false)}
+                  className="absolute top-2 right-2 bg-red-600 text-white w-12 h-12 rounded-full font-black text-2xl hover:bg-red-800"
+                >
+                  X
+                </button>
+                <h2 className="text-6xl font-black text-white mb-6">
+                  🎉 CLICK HERE TO WIN!!! 🎉
+                </h2>
+                <p className="text-3xl font-bold text-white mb-4">
+                  YOU'VE WON A FREE PROMOTION!!!
+                </p>
+                <button 
+                  onClick={() => {
+                    setMoney(money + 100);
+                    setShowPopup(false);
+                  }}
+                  className="bg-green-500 text-white font-black text-3xl py-4 px-8 rounded-full border-4 border-white w-full hover:bg-green-600"
+                >
+                  CLAIM +100 MONEY!!! 💰
+                </button>
+              </div>
+            </div>
+          )}
+
+          <div className="max-w-7xl mx-auto">
+            {/* Header */}
+            <div className="text-center mb-6">
+              <h1 className="text-7xl font-black text-white drop-shadow-2xl mb-2 animate-pulse">
+                CORPORATE CLICKER 3000™
+              </h1>
+              <p className="text-2xl text-yellow-300 font-bold">
+                CLICK TO MAKE MONEY! IT'S THAT EASY!!!
+              </p>
+              <p className="text-xl text-white mt-2 animate-bounce">
+                NOW {currentBuzzword} YOUR BUSINESS! 🚀
+              </p>
+            </div>
+
+            {/* Stats Dashboard */}
+            <div className="grid grid-cols-4 gap-4 mb-6">
+              <div className="bg-green-500 p-6 rounded-2xl border-4 border-white shadow-xl">
+                <div className="text-4xl mb-2">💰</div>
+                <div className="text-sm font-bold text-white">MONEY</div>
+                <div className="text-3xl font-black text-white">${money.toFixed(0)}</div>
+              </div>
+              <div className="bg-purple-500 p-6 rounded-2xl border-4 border-white shadow-xl">
+                <div className="text-4xl mb-2">🔥</div>
+                <div className="text-sm font-bold text-white">SYNERGY</div>
+                <div className="text-3xl font-black text-white">{synergy.toFixed(0)}%</div>
+              </div>
+              <div className="bg-yellow-500 p-6 rounded-2xl border-4 border-white shadow-xl">
+                <div className="text-4xl mb-2">⚡</div>
+                <div className="text-sm font-bold text-white">ELECTROLYTES</div>
+                <div className="text-3xl font-black text-white">{electrolytes.toFixed(0)}%</div>
+              </div>
+              <div className="bg-blue-500 p-6 rounded-2xl border-4 border-white shadow-xl">
+                <div className="text-4xl mb-2">👔</div>
+                <div className="text-sm font-bold text-white">EMPLOYEES</div>
+                <div className="text-3xl font-black text-white">{employees}</div>
+              </div>
+            </div>
+
+            {/* Main Clicker */}
+            <div className="flex justify-center mb-6">
+              <button
+                onClick={handleClick}
+                className="bg-gradient-to-r from-pink-500 to-purple-600 border-8 border-yellow-400 rounded-full w-64 h-64 shadow-2xl transform hover:scale-110 active:scale-95 transition-all cursor-pointer"
+              >
+                <div className="text-9xl animate-bounce">💵</div>
+                <div className="text-white font-black text-2xl mt-4">CLICK ME!!!</div>
+                <div className="text-yellow-300 font-bold text-xl">+${clickPower}/click</div>
+              </button>
+            </div>
+
+            {/* Income Display */}
+            <div className="bg-black border-4 border-green-500 p-4 mb-6 rounded-2xl">
+              <div className="text-center">
+                <span className="text-green-400 font-black text-2xl">
+                  💸 MAKING: ${autoMoney}/sec
+                </span>
+                <span className="text-yellow-400 font-black text-2xl ml-6">
+                  👆 CLICK POWER: ${clickPower}
+                </span>
+              </div>
+            </div>
+
+            {/* Upgrades */}
+            <div className="bg-blue-500 border-8 border-white p-6 rounded-3xl mb-6 shadow-2xl">
+              <h2 className="text-4xl font-black text-white mb-4 text-center">
+                🛒 UPGRADES (MAKE YOU BETTER) 🛒
+              </h2>
+              <div className="grid grid-cols-2 gap-4">
+                {upgrades.map((upgrade, i) => (
+                  <button
+                    key={i}
+                    onClick={() => buyUpgrade(upgrade)}
+                    disabled={money < upgrade.cost}
+                    className={`${money >= upgrade.cost ? 'bg-green-600 hover:bg-green-700' : 'bg-gray-600'} 
+                      p-4 rounded-2xl border-4 border-white transform hover:scale-105 transition-all`}
+                  >
+                    <div className="text-white font-black text-xl mb-2">{upgrade.name}</div>
+                    <div className="text-yellow-300 font-bold text-sm mb-2">{upgrade.desc}</div>
+                    <div className="text-white font-bold text-lg">💰 ${upgrade.cost}</div>
+                  </button>
+                ))}
+              </div>
+            </div>
+
+            {/* Achievements */}
+            <div className="bg-purple-600 border-8 border-pink-400 p-6 rounded-3xl mb-6 shadow-2xl">
+              <h2 className="text-3xl font-black text-white mb-4 text-center">
+                🏆 ACHIEVEMENTS 🏆
+              </h2>
+              <div className="bg-white p-4 rounded-xl">
+                {achievements.length === 0 ? (
+                  <p className="text-center font-bold text-gray-600">NONE YET! KEEP CLICKING!</p>
+                ) : (
+                  <div className="flex flex-wrap gap-2">
+                    {achievements.map((ach, i) => (
+                      <span key={i} className="bg-yellow-400 text-purple-900 font-black px-4 py-2 rounded-full">
+                        🏆 {ach.toUpperCase()}
+                      </span>
+                    ))}
+                  </div>
+                )}
+              </div>
+            </div>
+
+            {/* Game Tips */}
+            <div className="bg-red-500 border-8 border-yellow-400 p-6 rounded-3xl shadow-2xl">
+              <h3 className="text-3xl font-black text-white text-center mb-4">
+                💡 PRO TIPS (VERY HELPFUL) 💡
+              </h3>
+              <div className="bg-white p-4 rounded-xl">
+                <ul className="text-xl font-bold space-y-2">
+                  <li>✅ CLICK THE BIG MONEY BUTTON</li>
+                  <li>✅ BUY UPGRADES TO GET MORE MONEY</li>
+                  <li>✅ MORE MONEY = MORE BETTER</li>
+                  <li>✅ KEEP ELECTROLYTES HIGH OR ELSE</li>
+                  <li>✅ CLOSE THE POPUP ADS FOR FREE MONEY</li>
+                  <li>✅ SYNERGY IS IMPORTANT (MAYBE)</li>
+                </ul>
+              </div>
+            </div>
+
+            {/* Warning */}
+            <div className="mt-6 text-center text-white">
+              <p className="font-black text-xl animate-pulse">
+                ⚠️ GAME BALANCE: NONE | FUN LEVEL: MAXIMUM | SENSE: ZERO ⚠️
+              </p>
+            </div>
+          </div>
+        </div>
+      );
+    }
+
+    ReactDOM.render(<IdiocracyGame />, document.getElementById('root'));
+  </script>
+</body>
+</html>

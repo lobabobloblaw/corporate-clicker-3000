@@ -1,0 +1,37 @@
+═══════════════════════════════════════════════════════════════
+  DISCORD ACTIVITY - QUICK CONFIGURATION REFERENCE
+═══════════════════════════════════════════════════════════════
+
+YOUR CURRENT TUNNEL URL (copy this):
+https://conceptual-americans-investigation-mpeg.trycloudflare.com
+
+DISCORD DEVELOPER PORTAL:
+https://discord.com/developers/applications/1428205319435190293
+
+═══════════════════════════════════════════════════════════════
+  WHAT TO DO NOW
+═══════════════════════════════════════════════════════════════
+
+1. Go to the Developer Portal URL above
+2. Click "Activities" in the left sidebar
+3. Click "Settings" → Enable Activities → Save
+4. Click "URL Mappings" → Add new mapping:
+   - Prefix: /
+   - Target: https://conceptual-americans-investigation-mpeg.trycloudflare.com
+   - Save
+
+5. Test in a Discord server with < 25 members:
+   - Join a voice channel
+   - Click the 🚀 Activities button
+   - Launch "Corporate Clicker 3000"
+
+═══════════════════════════════════════════════════════════════
+
+✅ Tunnel Status: RUNNING
+✅ HTTPS URL: ACTIVE
+✅ Files Deployed: /var/www/clicker/
+
+⚠️  NOTE: This URL is temporary and will change if the server restarts.
+    For production, you'll need a custom domain.
+
+═══════════════════════════════════════════════════════════════

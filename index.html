@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+
+    <!-- iOS PWA Settings -->
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+
+    <!-- Prevent zoom on mobile (important for Discord iframe) -->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover" />
+
+    <!-- Discord Activity Metadata -->
+    <meta name="description" content="Corporate Clicker 3000 - Click to make money! A satirical idle clicker game for Discord" />
+    <meta name="keywords" content="discord, activity, game, clicker, idle game, corporate" />
+    <meta name="author" content="Corporate Clicker 3000" />
+
+    <!-- Theme Color (matches app gradient) -->
+    <meta name="theme-color" content="#fb923c" />
+
+    <!-- Open Graph / Discord -->
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content="Corporate Clicker 3000™" />
+    <meta property="og:description" content="Click to make money! It's that easy!!!" />
+
+    <title>Corporate Clicker 3000™ - Discord Activity</title>
+
+    <!-- Preconnect to Discord API for faster requests -->
+    <link rel="preconnect" href="https://discord.com" />
+    <link rel="preconnect" href="https://cdn.discordapp.com" />
+
+    <!-- iOS Safe Area & Mobile Optimizations -->
+    <style>
+      :root {
+        /* iOS safe area insets */
+        --safe-area-inset-top: env(safe-area-inset-top, 0px);
+        --safe-area-inset-bottom: env(safe-area-inset-bottom, 0px);
+        --safe-area-inset-left: env(safe-area-inset-left, 0px);
+        --safe-area-inset-right: env(safe-area-inset-right, 0px);
+      }
+
+      /* Prevent overscroll bounce on iOS */
+      html, body {
+        overscroll-behavior: none;
+        -webkit-overflow-scrolling: touch;
+        position: fixed;
+        width: 100%;
+        height: 100%;
+        margin: 0;
+        padding: 0;
+      }
+
+      /* Root container respects safe areas */
+      #root {
+        width: 100%;
+        height: 100%;
+        padding-top: var(--safe-area-inset-top);
+        padding-bottom: var(--safe-area-inset-bottom);
+        padding-left: var(--safe-area-inset-left);
+        padding-right: var(--safe-area-inset-right);
+        overflow-y: auto;
+      }
+
+      /* Disable pull-to-refresh */
+      body {
+        overscroll-behavior-y: contain;
+      }
+
+      /* Improve touch responsiveness (remove 300ms delay) */
+      * {
+        touch-action: manipulation;
+      }
+
+      /* Better font rendering on mobile */
+      body {
+        -webkit-font-smoothing: antialiased;
+        -moz-osx-font-smoothing: grayscale;
+        text-rendering: optimizeLegibility;
+      }
+    </style>
+  </head>
+  <body>
+    <!-- Root element for React app -->
+    <div id="root"></div>
+
+    <!-- Application entry point -->
+    <script type="module" src="/src/app/main.tsx"></script>
+  </body>
+</html>
