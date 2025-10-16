@@ -1,6 +1,6 @@
 /**
- * Corporate Clicker 3000™ v3.0
- * Complete redesign with 10x more complexity, humor, and engagement
+ * Corporate Clicker 3000™ v4.0 REALITY.EXE
+ * Now with reality-breaking mechanics!
  */
 
 import { useState, useEffect, useCallback, memo } from 'react'
@@ -9,6 +9,15 @@ import type { GameState } from '../types/game'
 import { UPGRADES, getAvailableUpgrades, getUpgradeCost } from '../data/upgrades'
 import { getRandomEvent } from '../data/events'
 import { ACHIEVEMENTS, checkAchievements } from '../data/achievements'
+import {
+  canAscend,
+  getNextTier,
+  getCurrentTier,
+  getActiveSynergies,
+  getSynergyMultipliers,
+  shouldTriggerGlitch,
+  getRandomGlitch
+} from '../data/ascension'
 
 function CorpClickerInner() {
   const { auth } = useDiscordSdk()
@@ -42,9 +51,25 @@ function CorpClickerInner() {
     activeEffects: [],
     lifetimeEarnings: 0,
     bankruptcyCount: 0,
+
+    // Ascension system
+    ascensionTier: 0,
+    totalAscensions: 0,
+    temporalFlux: 0,
+    realityStability: 100,
+
+    // Meta mechanics
+    glitchMeter: 0,
+    activeGlitches: [],
+    secretsUnlocked: [],
+    maxMoneyThisRun: 0,
+
+    // Stats tracking
     totalClicks: 0,
     lifetimeClicks: 0,
-    startTime: Date.now()
+    startTime: Date.now(),
+    lastClickTime: Date.now(),
+    clickCombo: 0
   })
 
   // UI state
@@ -64,11 +89,18 @@ function CorpClickerInner() {
   useEffect(() => {
     const interval = setInterval(() => {
       setGameState(prev => {
-        const newMoney = prev.money + prev.autoMoney
+        // Apply synergy multipliers
+        const multipliers = getSynergyMultipliers(prev.purchasedUpgrades)
+        const effectiveAutoMoney = prev.autoMoney * multipliers.autoMoneyMultiplier
+
+        const newMoney = prev.money + effectiveAutoMoney
+        const newMaxMoney = Math.max(prev.maxMoneyThisRun, newMoney)
+
         return {
           ...prev,
           money: newMoney,
           lifetimeEarnings: Math.max(prev.lifetimeEarnings, newMoney),
+          maxMoneyThisRun: newMaxMoney,
           synergy: Math.min(100, prev.synergy + prev.employees * 0.1),
           electrolytes: Math.max(0, prev.electrolytes - 0.5),
           meetingTime: Math.max(0, prev.meetingTime - 0.5) // Meetings decay
@@ -127,6 +159,56 @@ function CorpClickerInner() {
   }, [gameState])
 
   // ============================================
+  // GLITCH FARMING SYSTEM
+  // ============================================
+  useEffect(() => {
+    const glitchInterval = setInterval(() => {
+      setGameState(prev => {
+        if (shouldTriggerGlitch(prev)) {
+          const glitch = getRandomGlitch()
+          if (glitch) {
+            showToastNotification(`⚡ GLITCH: ${glitch.name}`)
+
+            // Apply glitch effects
+            const glitchEffects = glitch.gameEffect(prev)
+
+            return {
+              ...prev,
+              ...glitchEffects,
+              activeGlitches: [...prev.activeGlitches, glitch.id],
+              realityStability: Math.max(0, prev.realityStability - 5)
+            }
+          }
+        }
+
+        // Decay glitch meter slowly
+        return {
+          ...prev,
+          glitchMeter: Math.max(0, prev.glitchMeter - 0.5),
+          realityStability: Math.min(100, prev.realityStability + 0.1)
+        }
+      })
+    }, 1000)
+    return () => clearInterval(glitchInterval)
+  }, [])
+
+  // ============================================
+  // SYNERGY SYSTEM - Notify when unlocked
+  // ============================================
+  useEffect(() => {
+    const activeSynergies = getActiveSynergies(gameState.purchasedUpgrades)
+    activeSynergies.forEach(synergy => {
+      if (!gameState.secretsUnlocked.includes(synergy.id)) {
+        showToastNotification(`💥 SYNERGY UNLOCKED: ${synergy.name}`)
+        setGameState(prev => ({
+          ...prev,
+          secretsUnlocked: [...prev.secretsUnlocked, synergy.id]
+        }))
+      }
+    })
+  }, [gameState.purchasedUpgrades])
+
+  // ============================================
   // POPUP ADS
   // ============================================
   useEffect(() => {
@@ -161,14 +243,35 @@ function CorpClickerInner() {
   // ============================================
   const handleClick = useCallback(() => {
     setGameState(prev => {
-      const newMoney = prev.money + prev.clickPower
+      const now = Date.now()
+      const timeSinceLastClick = now - prev.lastClickTime
+
+      // Calculate click combo (reset if > 500ms between clicks)
+      const newCombo = timeSinceLastClick < 500 ? prev.clickCombo + 1 : 1
+
+      // Fast clicking fills glitch meter
+      const glitchGain = timeSinceLastClick < 200 ? 2 : timeSinceLastClick < 500 ? 1 : 0
+      const newGlitchMeter = Math.min(100, prev.glitchMeter + glitchGain)
+
+      // Apply synergy multipliers
+      const multipliers = getSynergyMultipliers(prev.purchasedUpgrades)
+      const effectiveClickPower = prev.clickPower * multipliers.clickPowerMultiplier
+
+      const newMoney = prev.money + effectiveClickPower
+      const newMaxMoney = Math.max(prev.maxMoneyThisRun, newMoney)
+
       return {
         ...prev,
         money: newMoney,
         lifetimeEarnings: Math.max(prev.lifetimeEarnings, newMoney),
+        maxMoneyThisRun: newMaxMoney,
         synergy: Math.min(100, prev.synergy + 1),
         totalClicks: prev.totalClicks + 1,
-        lifetimeClicks: prev.lifetimeClicks + 1
+        lifetimeClicks: prev.lifetimeClicks + 1,
+        lastClickTime: now,
+        clickCombo: newCombo,
+        glitchMeter: newGlitchMeter,
+        temporalFlux: prev.temporalFlux + multipliers.temporalFluxGain
       }
     })
   }, [])
@@ -219,6 +322,65 @@ function CorpClickerInner() {
     }
   }, [gameState.money, gameState.upgradeCount])
 
+  // ============================================
+  // ASCENSION HANDLER
+  // ============================================
+  const handleAscend = useCallback(() => {
+    if (!canAscend(gameState)) return
+
+    const nextTier = getNextTier(gameState.ascensionTier)
+    if (!nextTier) return
+
+    showToastNotification(`⚡ ASCENDING TO ${nextTier.name}!`)
+
+    setGameState(prev => ({
+      // Reset resources
+      money: 0,
+      clickPower: 1,
+      autoMoney: 0,
+      synergy: 0,
+      electrolytes: 100,
+      employees: 0,
+      buzzwordLevel: 1,
+      stockPrice: 1.0,
+      legalLiability: 0,
+      caffeine: 0,
+      meetingTime: 0,
+
+      // Clear upgrades
+      purchasedUpgrades: [],
+      upgradeCount: {},
+
+      // Preserve prestige stats
+      buzzwordPoints: prev.buzzwordPoints + nextTier.buzzwordReward,
+      lifetimeEarnings: prev.lifetimeEarnings,
+      bankruptcyCount: prev.bankruptcyCount + 1,
+      unlockedAchievements: prev.unlockedAchievements,
+      lifetimeClicks: prev.lifetimeClicks,
+
+      // Update ascension
+      ascensionTier: prev.ascensionTier + 1,
+      totalAscensions: prev.totalAscensions + 1,
+
+      // Reset meta mechanics
+      glitchMeter: 0,
+      activeGlitches: [],
+      maxMoneyThisRun: 0,
+      temporalFlux: prev.temporalFlux, // Keep temporal flux
+      realityStability: 50, // Lower stability in higher tiers
+
+      // Keep secrets
+      secretsUnlocked: prev.secretsUnlocked,
+      activeEffects: [],
+
+      // Reset tracking
+      totalClicks: 0,
+      startTime: Date.now(),
+      lastClickTime: Date.now(),
+      clickCombo: 0
+    }))
+  }, [gameState])
+
   // Get available upgrades
   const availableUpgrades = getAvailableUpgrades({
     money: gameState.money,
@@ -229,11 +391,18 @@ function CorpClickerInner() {
     purchasedUpgrades: gameState.purchasedUpgrades
   })
 
+  // Get ascension data
+  const currentTier = getCurrentTier(gameState.ascensionTier)
+  const nextTier = getNextTier(gameState.ascensionTier)
+  const canAscendNow = canAscend(gameState)
+  const activeSynergies = getActiveSynergies(gameState.purchasedUpgrades)
+  const synergyMultipliers = getSynergyMultipliers(gameState.purchasedUpgrades)
+
   // ============================================
   // RENDER
   // ============================================
   return (
-    <div className="h-screen max-h-screen bg-discord-bg-primary text-discord-text-normal font-sans overflow-hidden flex flex-col touch-action-none">
+    <div className={`h-screen max-h-screen bg-discord-bg-primary text-discord-text-normal font-sans overflow-hidden flex flex-col touch-action-none reality-${gameState.ascensionTier}`}>
 
       {/* Toast Notification */}
       {showToast && (
@@ -291,10 +460,20 @@ function CorpClickerInner() {
             )}
           </div>
           <div className="flex flex-col items-end">
-            <p className="text-[10px] md:text-sm text-discord-text-muted hidden sm:block">
-              <span className="text-discord-yellow font-bold">{currentBuzzword}</span> 🚀
+            <p className="text-[10px] md:text-sm text-discord-text-muted">
+              <span className="text-discord-yellow font-bold hidden sm:inline">{currentBuzzword}</span>
+              {' '}
+              <span className={`font-black ${
+                gameState.ascensionTier === 0 ? 'text-gray-400' :
+                gameState.ascensionTier === 1 ? 'text-blue-400' :
+                gameState.ascensionTier === 2 ? 'text-purple-400' :
+                gameState.ascensionTier === 3 ? 'text-yellow-400' :
+                'text-red-500 animate-pulse'
+              }`}>
+                {currentTier.name}
+              </span>
             </p>
-            <p className="text-[8px] text-discord-text-muted opacity-50">v3.0</p>
+            <p className="text-[8px] text-discord-text-muted opacity-50">v4.0 REALITY.EXE</p>
           </div>
         </div>
       </div>
@@ -349,6 +528,61 @@ function CorpClickerInner() {
                 </div>
               </div>
 
+              {/* Meta Mechanics Display */}
+              {gameState.ascensionTier > 0 && (
+                <div className="bg-discord-bg-secondary rounded-lg p-2 md:p-2.5">
+                  <div className="grid grid-cols-2 gap-2 text-[10px]">
+                    <div>
+                      <span className="text-discord-text-muted">⚡ Glitch:</span>
+                      <div className="bg-discord-bg-tertiary rounded-full h-2 mt-0.5 overflow-hidden">
+                        <div
+                          className="bg-gradient-to-r from-purple-500 to-pink-500 h-full transition-all"
+                          style={{ width: `${gameState.glitchMeter}%` }}
+                        />
+                      </div>
+                    </div>
+                    <div>
+                      <span className="text-discord-text-muted">🌀 Temporal:</span>
+                      <span className="text-white font-bold ml-1">{gameState.temporalFlux.toFixed(0)}</span>
+                    </div>
+                    <div>
+                      <span className="text-discord-text-muted">💥 Combo:</span>
+                      <span className="text-white font-bold ml-1">x{gameState.clickCombo}</span>
+                    </div>
+                    <div>
+                      <span className="text-discord-text-muted">🎯 Reality:</span>
+                      <span className="text-white font-bold ml-1">{gameState.realityStability.toFixed(0)}%</span>
+                    </div>
+                  </div>
+                </div>
+              )}
+
+              {/* Active Synergies */}
+              {activeSynergies.length > 0 && (
+                <div className="bg-gradient-to-r from-purple-900 to-pink-900 rounded-lg p-2">
+                  <div className="text-[10px] font-bold text-white mb-1 flex items-center gap-1">
+                    <span>💥</span>
+                    <span>ACTIVE SYNERGIES ({activeSynergies.length})</span>
+                  </div>
+                  <div className="flex flex-wrap gap-1">
+                    {activeSynergies.map(syn => (
+                      <span
+                        key={syn.id}
+                        className="bg-white bg-opacity-20 text-white text-[9px] px-1.5 py-0.5 rounded font-bold"
+                        title={syn.description}
+                      >
+                        {syn.icon} {syn.name}
+                      </span>
+                    ))}
+                  </div>
+                  <div className="text-[9px] text-yellow-200 mt-1">
+                    💰×{synergyMultipliers.moneyMultiplier.toFixed(1)} |
+                    👆×{synergyMultipliers.clickPowerMultiplier.toFixed(1)} |
+                    💸×{synergyMultipliers.autoMoneyMultiplier.toFixed(1)}
+                  </div>
+                </div>
+              )}
+
               {/* Income Display - Desktop Only */}
               <div className="hidden md:flex bg-discord-bg-secondary rounded-lg p-2">
                 <div className="flex justify-between items-center text-xs w-full">
@@ -366,6 +600,34 @@ function CorpClickerInner() {
                   </div>
                 </div>
               </div>
+
+              {/* Ascend Button */}
+              {nextTier && (
+                <button
+                  onClick={handleAscend}
+                  disabled={!canAscendNow}
+                  className={`w-full rounded-lg p-3 transition-all ${
+                    canAscendNow
+                      ? 'bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-500 hover:to-pink-500 animate-pulse cursor-pointer'
+                      : 'bg-discord-bg-tertiary opacity-60 cursor-not-allowed'
+                  }`}
+                >
+                  <div className="text-center">
+                    <div className="text-2xl mb-1">⚡</div>
+                    <div className="text-white font-black text-sm">
+                      ASCEND TO {nextTier.name}
+                    </div>
+                    <div className="text-[10px] text-discord-text-muted mt-1">
+                      Cost: ${(nextTier.cost / 1000000).toFixed(0)}M | Reward: {nextTier.buzzwordReward} BP
+                    </div>
+                    {!canAscendNow && (
+                      <div className="text-[10px] text-red-400 mt-1">
+                        Need ${((nextTier.cost - gameState.money) / 1000000).toFixed(1)}M more
+                      </div>
+                    )}
+                  </div>
+                </button>
+              )}
 
               {/* Upgrades */}
               <div className="bg-discord-bg-secondary rounded-lg p-2 md:p-3 flex-1 flex flex-col overflow-hidden">

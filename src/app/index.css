@@ -141,4 +141,133 @@
     @apply active:bg-discord-active active:scale-95;
     transition: background-color 0.1s, transform 0.1s;
   }
+
+  /* Reality-breaking glitch effects */
+  @keyframes glitch-shake {
+    0%, 100% { transform: translate(0, 0); }
+    10% { transform: translate(-2px, 2px); }
+    20% { transform: translate(2px, -2px); }
+    30% { transform: translate(-2px, -2px); }
+    40% { transform: translate(2px, 2px); }
+    50% { transform: translate(-2px, 2px); }
+    60% { transform: translate(2px, -2px); }
+    70% { transform: translate(-2px, -2px); }
+    80% { transform: translate(2px, 2px); }
+    90% { transform: translate(-2px, 2px); }
+  }
+
+  @keyframes glitch-rgb {
+    0% { filter: none; }
+    20% { filter: hue-rotate(90deg); }
+    40% { filter: hue-rotate(180deg); }
+    60% { filter: hue-rotate(270deg); }
+    80% { filter: hue-rotate(360deg); }
+    100% { filter: none; }
+  }
+
+  @keyframes reality-crack {
+    0%, 100% {
+      filter: none;
+      transform: scale(1);
+    }
+    25% {
+      filter: invert(0.2) hue-rotate(45deg);
+      transform: scale(1.02) rotate(0.5deg);
+    }
+    50% {
+      filter: invert(0.4) hue-rotate(90deg);
+      transform: scale(0.98) rotate(-0.5deg);
+    }
+    75% {
+      filter: invert(0.2) hue-rotate(135deg);
+      transform: scale(1.01) rotate(0.3deg);
+    }
+  }
+
+  @keyframes slide-up {
+    from {
+      transform: translateY(100%);
+      opacity: 0;
+    }
+    to {
+      transform: translateY(0);
+      opacity: 1;
+    }
+  }
+
+  @keyframes pulse-chaos {
+    0%, 100% {
+      opacity: 1;
+      transform: scale(1);
+    }
+    50% {
+      opacity: 0.7;
+      transform: scale(1.05);
+    }
+  }
+
+  /* Reality tier visual effects */
+  .reality-0 {
+    /* Normal - no effects */
+  }
+
+  .reality-1 {
+    animation: pulse-chaos 3s ease-in-out infinite;
+  }
+
+  .reality-2 {
+    animation: glitch-rgb 5s ease-in-out infinite;
+  }
+
+  .reality-3 {
+    animation: reality-crack 4s ease-in-out infinite;
+  }
+
+  .reality-4 {
+    animation: glitch-shake 0.3s ease-in-out infinite, glitch-rgb 2s ease-in-out infinite;
+    filter: saturate(1.5) contrast(1.2);
+  }
+
+  /* Glitch meter effects */
+  .glitch-active {
+    animation: glitch-shake 0.5s ease-in-out;
+  }
+
+  /* Slide up animation for notifications */
+  .animate-slide-up {
+    animation: slide-up 0.3s ease-out;
+  }
+
+  /* Active scale for buttons */
+  .active\:scale-98:active {
+    transform: scale(0.98);
+  }
+
+  .active\:scale-95:active {
+    transform: scale(0.95);
+  }
+
+  /* Scrollbar styling */
+  .scrollbar-thin::-webkit-scrollbar {
+    width: 6px;
+  }
+
+  .scrollbar-thumb-discord-border::-webkit-scrollbar-thumb {
+    background-color: #3f4147;
+    border-radius: 3px;
+  }
+
+  .scrollbar-track-transparent::-webkit-scrollbar-track {
+    background: transparent;
+  }
+
+  /* Touch action none for preventing scroll */
+  .touch-action-none {
+    touch-action: none;
+  }
+
+  /* Min height touch for accessibility */
+  .min-h-touch {
+    min-height: 44px;
+  }
 }

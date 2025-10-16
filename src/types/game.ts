@@ -36,10 +36,24 @@ export interface GameState {
   lifetimeEarnings: number
   bankruptcyCount: number
 
+  // Ascension system
+  ascensionTier: number        // 0-4 (Corporatism → SYNTAX ERROR)
+  totalAscensions: number      // Total times ascended
+  temporalFlux: number         // Time manipulation resource
+  realityStability: number     // 0-100, affects glitch frequency
+
+  // Meta mechanics
+  glitchMeter: number          // 0-100, fills from fast clicking
+  activeGlitches: string[]     // Currently active glitch effects
+  secretsUnlocked: string[]    // Hidden mechanics discovered
+  maxMoneyThisRun: number      // For tracking achievements
+
   // Stats tracking
   totalClicks: number
   lifetimeClicks: number
   startTime: number
+  lastClickTime: number        // For detecting rapid clicking
+  clickCombo: number           // Current click streak
 }
 
 export interface StatusEffect {
@@ -136,4 +150,42 @@ export interface Achievement {
 export interface NewsItem {
   text: string
   icon?: string
+}
+
+export interface AscensionTier {
+  id: number
+  name: string
+  description: string
+  cost: number  // Money required to ascend
+  buzzwordReward: number  // Buzzword points gained
+  unlocks: string[]  // Feature IDs unlocked
+  visualEffect: string  // CSS class or effect identifier
+  glitchChance: number  // 0-1, chance for reality glitches
+}
+
+export interface Synergy {
+  id: string
+  name: string
+  description: string
+  icon: string
+  requires: string[]  // Upgrade IDs that must be owned
+  effect: {
+    moneyMultiplier?: number
+    clickPowerMultiplier?: number
+    autoMoneyMultiplier?: number
+    glitchMeterBonus?: number
+    temporalFluxGain?: number
+    chaos?: boolean  // Triggers random chaos events
+  }
+}
+
+export interface Glitch {
+  id: string
+  name: string
+  description: string
+  icon: string
+  duration: number  // seconds, -1 for permanent
+  triggerChance: number  // 0-1, probability when glitch meter full
+  visualEffect: string  // CSS class or animation
+  gameEffect: (state: GameState) => Partial<GameState>
 }
