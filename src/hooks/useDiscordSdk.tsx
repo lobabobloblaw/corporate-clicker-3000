@@ -129,9 +129,8 @@ export function DiscordProvider({ children }: DiscordProviderProps) {
         }
       } else {
         // Real Discord environment - use authenticate command
-        const authResult = await sdk.commands.authenticate({
-          access_token: null
-        })
+        // For Discord Activities, pass empty object to authenticate()
+        const authResult = await sdk.commands.authenticate({})
         user = {
           id: authResult.user.id,
           username: authResult.user.username,
