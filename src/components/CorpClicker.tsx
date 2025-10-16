@@ -224,38 +224,38 @@ function CorpClickerInner() {
             <div className="flex flex-col gap-2 md:gap-3 md:h-full overflow-hidden">
 
               {/* Stats Dashboard - Compact */}
-              <div className="grid grid-cols-2 gap-2">
+              <div className="grid grid-cols-2 gap-1.5 md:gap-2">
                 {/* Money */}
-                <div className="bg-discord-bg-secondary rounded-lg p-2.5 border-l-4 border-discord-green">
-                  <div className="text-lg mb-0.5">💰</div>
-                  <div className="text-[10px] text-discord-text-muted font-medium uppercase tracking-wide">Money</div>
-                  <div className="text-lg font-bold text-white">${money.toFixed(0)}</div>
+                <div className="bg-discord-bg-secondary rounded-lg p-2 md:p-2.5 border-l-4 border-discord-green">
+                  <div className="text-base md:text-lg mb-0.5">💰</div>
+                  <div className="text-[9px] md:text-[10px] text-discord-text-muted font-medium uppercase tracking-wide">Money</div>
+                  <div className="text-base md:text-lg font-bold text-white">${money.toFixed(0)}</div>
                 </div>
 
                 {/* Synergy */}
-                <div className="bg-discord-bg-secondary rounded-lg p-2.5 border-l-4 border-discord-fuchsia">
-                  <div className="text-lg mb-0.5">🔥</div>
-                  <div className="text-[10px] text-discord-text-muted font-medium uppercase tracking-wide">Synergy</div>
-                  <div className="text-lg font-bold text-white">{synergy.toFixed(0)}%</div>
+                <div className="bg-discord-bg-secondary rounded-lg p-2 md:p-2.5 border-l-4 border-discord-fuchsia">
+                  <div className="text-base md:text-lg mb-0.5">🔥</div>
+                  <div className="text-[9px] md:text-[10px] text-discord-text-muted font-medium uppercase tracking-wide">Synergy</div>
+                  <div className="text-base md:text-lg font-bold text-white">{synergy.toFixed(0)}%</div>
                 </div>
 
                 {/* Electrolytes */}
-                <div className="bg-discord-bg-secondary rounded-lg p-2.5 border-l-4 border-discord-yellow">
-                  <div className="text-lg mb-0.5">⚡</div>
-                  <div className="text-[10px] text-discord-text-muted font-medium uppercase tracking-wide">Electrolytes</div>
-                  <div className="text-lg font-bold text-white">{electrolytes.toFixed(0)}%</div>
+                <div className="bg-discord-bg-secondary rounded-lg p-2 md:p-2.5 border-l-4 border-discord-yellow">
+                  <div className="text-base md:text-lg mb-0.5">⚡</div>
+                  <div className="text-[9px] md:text-[10px] text-discord-text-muted font-medium uppercase tracking-wide">Electrolytes</div>
+                  <div className="text-base md:text-lg font-bold text-white">{electrolytes.toFixed(0)}%</div>
                 </div>
 
                 {/* Employees */}
-                <div className="bg-discord-bg-secondary rounded-lg p-2.5 border-l-4 border-discord-blurple">
-                  <div className="text-lg mb-0.5">👔</div>
-                  <div className="text-[10px] text-discord-text-muted font-medium uppercase tracking-wide">Employees</div>
-                  <div className="text-lg font-bold text-white">{employees}</div>
+                <div className="bg-discord-bg-secondary rounded-lg p-2 md:p-2.5 border-l-4 border-discord-blurple">
+                  <div className="text-base md:text-lg mb-0.5">👔</div>
+                  <div className="text-[9px] md:text-[10px] text-discord-text-muted font-medium uppercase tracking-wide">Employees</div>
+                  <div className="text-base md:text-lg font-bold text-white">{employees}</div>
                 </div>
               </div>
 
               {/* Income Display - Compact */}
-              <div className="bg-discord-bg-secondary rounded-lg p-2.5">
+              <div className="bg-discord-bg-secondary rounded-lg p-2 md:p-2.5">
                 <div className="flex justify-between items-center text-xs">
                   <div className="flex items-center gap-1.5">
                     <span className="text-discord-green">💸</span>
@@ -273,8 +273,8 @@ function CorpClickerInner() {
               </div>
 
               {/* Upgrades - Scrollable with Fixed Height */}
-              <div className="bg-discord-bg-secondary rounded-lg p-3 flex-1 flex flex-col overflow-hidden">
-                <h2 className="text-base font-bold text-white mb-2 flex items-center gap-1.5">
+              <div className="bg-discord-bg-secondary rounded-lg p-2 md:p-3 max-h-[250px] md:flex-1 flex flex-col overflow-hidden">
+                <h2 className="text-sm md:text-base font-bold text-white mb-1.5 md:mb-2 flex items-center gap-1.5">
                   <span>🛒</span>
                   <span>Upgrades</span>
                 </h2>
@@ -305,7 +305,7 @@ function CorpClickerInner() {
             <div className="flex flex-col gap-2 md:gap-3 md:h-full">
 
               {/* Main Clicker Button */}
-              <div className="bg-discord-bg-secondary rounded-lg p-3 md:p-4 flex items-center justify-center">
+              <div className="bg-discord-bg-secondary rounded-lg p-2 md:p-4 flex items-center justify-center flex-shrink-0">
                 <button
                   onClick={handleClick}
                   className="bg-gradient-to-br from-discord-blurple to-purple-600 hover:from-blue-500 hover:to-purple-500 rounded-full w-32 h-32 md:w-44 md:h-44 shadow-2xl active:scale-95 transition-all flex flex-col items-center justify-center"
@@ -317,8 +317,8 @@ function CorpClickerInner() {
               </div>
 
               {/* Achievements - Compact */}
-              <div className="bg-discord-bg-secondary rounded-lg p-3 flex-1 overflow-hidden flex flex-col">
-                <h2 className="text-base font-bold text-white mb-2 flex items-center gap-1.5">
+              <div className="bg-discord-bg-secondary rounded-lg p-2 md:p-3 max-h-[150px] md:flex-1 overflow-hidden flex flex-col">
+                <h2 className="text-sm md:text-base font-bold text-white mb-1.5 md:mb-2 flex items-center gap-1.5">
                   <span>🏆</span>
                   <span>Achievements</span>
                 </h2>
@@ -343,12 +343,12 @@ function CorpClickerInner() {
               </div>
 
               {/* Pro Tips - Compact */}
-              <div className="bg-discord-bg-secondary rounded-lg p-3">
-                <h3 className="text-sm font-bold text-white mb-2 flex items-center gap-1.5">
+              <div className="bg-discord-bg-secondary rounded-lg p-2 md:p-3 flex-shrink-0">
+                <h3 className="text-xs md:text-sm font-bold text-white mb-1.5 md:mb-2 flex items-center gap-1.5">
                   <span>💡</span>
                   <span>Pro Tips</span>
                 </h3>
-                <div className="bg-discord-bg-tertiary rounded-lg p-2">
+                <div className="bg-discord-bg-tertiary rounded-lg p-1.5 md:p-2">
                   <ul className="text-[10px] space-y-1 text-discord-text-muted">
                     <li className="flex items-start gap-1.5">
                       <span className="text-discord-green text-xs">✓</span>
