@@ -17,7 +17,7 @@ export const RANDOM_EVENTS: RandomEvent[] = [
     icon: '💤',
     weight: 4,
     sound: 'good',
-    effect: (state) => ({ money: state.money + 500 })
+    effect: (state) => ({ money: state.money + Math.max(500, state.money * 0.05) })
   },
   {
     id: 'free_burger',
@@ -43,7 +43,7 @@ export const RANDOM_EVENTS: RandomEvent[] = [
     weight: 2,
     requires: { minMoney: 50000 },
     sound: 'good',
-    effect: (state) => ({ money: state.money + 5000 })
+    effect: (state) => ({ money: state.money + (state.money * 0.08) })
   },
   {
     id: 'vc_funding',
@@ -52,7 +52,7 @@ export const RANDOM_EVENTS: RandomEvent[] = [
     weight: 2,
     requires: { minBuzzwordLevel: 5 },
     sound: 'good',
-    effect: (state) => ({ money: state.money + 10000 })
+    effect: (state) => ({ money: state.money + Math.max(10000, state.money * 0.15) })
   },
   {
     id: 'competitor_bankrupt',
@@ -61,7 +61,7 @@ export const RANDOM_EVENTS: RandomEvent[] = [
     weight: 3,
     requires: { minEmployees: 10 },
     sound: 'good',
-    effect: (state) => ({ money: state.money + 2000, autoMoney: state.autoMoney + 50 })
+    effect: (state) => ({ money: state.money + Math.max(2000, state.money * 0.06), autoMoney: state.autoMoney * 1.1 })
   },
   {
     id: 'viral_tweet',
@@ -70,7 +70,7 @@ export const RANDOM_EVENTS: RandomEvent[] = [
     weight: 2,
     requires: { minMoney: 100000 },
     sound: 'good',
-    effect: (state) => ({ money: state.money + 25000 })
+    effect: (state) => ({ money: state.money * 1.15 })
   },
   {
     id: 'govt_subsidy',
@@ -79,7 +79,7 @@ export const RANDOM_EVENTS: RandomEvent[] = [
     weight: 2,
     requires: { minEmployees: 50 },
     sound: 'good',
-    effect: () => ({ money: 50000 })
+    effect: (state) => ({ money: state.money + Math.max(50000, state.money * 0.12) })
   },
 
   // ============================================
@@ -139,7 +139,7 @@ export const RANDOM_EVENTS: RandomEvent[] = [
     weight: 3,
     requires: { minMoney: 100000 },
     sound: 'chaotic',
-    effect: (state) => ({ money: Math.max(0, state.money - 25000), legalLiability: Math.max(0, state.legalLiability - 100) })
+    effect: (state) => ({ money: Math.max(0, state.money * 0.92), legalLiability: Math.max(0, state.legalLiability - 100) })
   },
   {
     id: 'intern_discovered',
@@ -165,7 +165,7 @@ export const RANDOM_EVENTS: RandomEvent[] = [
     icon: '😰',
     weight: 4,
     sound: 'chaotic',
-    effect: (state) => ({ money: Math.max(0, state.money - 500), synergy: state.synergy + 20 })
+    effect: (state) => ({ money: Math.max(0, state.money * 0.98), synergy: state.synergy + 20 })
   },
   {
     id: 'union_forming',
@@ -174,7 +174,7 @@ export const RANDOM_EVENTS: RandomEvent[] = [
     weight: 3,
     requires: { minEmployees: 20 },
     sound: 'bad',
-    effect: (state) => ({ money: Math.max(0, state.money - 5000), legalLiability: state.legalLiability + 100 })
+    effect: (state) => ({ money: Math.max(0, state.money * 0.95), legalLiability: state.legalLiability + 100 })
   },
 
   // ============================================
@@ -194,7 +194,7 @@ export const RANDOM_EVENTS: RandomEvent[] = [
     icon: '📊',
     weight: 7,
     sound: 'neutral',
-    effect: (state) => ({ money: state.money + Math.floor((Math.random() - 0.5) * 2000) })
+    effect: (state) => ({ money: state.money * (0.95 + Math.random() * 0.1) })
   },
   {
     id: 'interpretive_dance',
@@ -236,7 +236,7 @@ export const RANDOM_EVENTS: RandomEvent[] = [
     icon: '🎯',
     weight: 5,
     sound: 'bad',
-    effect: (state) => ({ money: Math.max(0, state.money - 1000), meetingTime: state.meetingTime + 20 })
+    effect: (state) => ({ money: Math.max(0, state.money * 0.99), meetingTime: state.meetingTime + 20 })
   },
   {
     id: 'mandatory_training',
@@ -253,7 +253,7 @@ export const RANDOM_EVENTS: RandomEvent[] = [
     icon: '⚽',
     weight: 5,
     sound: 'neutral',
-    effect: (state) => ({ money: Math.max(0, state.money - 500), synergy: state.synergy + 5 })
+    effect: (state) => ({ money: Math.max(0, state.money * 0.995), synergy: state.synergy + 5 })
   },
 
   // ============================================
@@ -294,7 +294,7 @@ export const RANDOM_EVENTS: RandomEvent[] = [
     icon: '₿',
     weight: 1,
     sound: 'good',
-    effect: (state) => ({ money: state.money + 100000 })
+    effect: (state) => ({ money: state.money + Math.max(100000, state.money * 0.25) })
   },
   {
     id: 'alien_contact',
@@ -303,7 +303,7 @@ export const RANDOM_EVENTS: RandomEvent[] = [
     weight: 1,
     requires: { minMoney: 10000000 },
     sound: 'chaotic',
-    effect: (state) => ({ money: state.money + 5000000, buzzwordLevel: state.buzzwordLevel + 100 })
+    effect: (state) => ({ money: state.money * 1.5, buzzwordLevel: state.buzzwordLevel + 100 })
   },
 
   // ============================================
@@ -358,7 +358,7 @@ export const RANDOM_EVENTS: RandomEvent[] = [
     weight: 5,
     requires: { minEmployees: 10 },
     sound: 'bad',
-    effect: (state) => ({ money: Math.max(0, state.money - 1000), meetingTime: state.meetingTime + 10 })
+    effect: (state) => ({ money: Math.max(0, state.money * 0.99), meetingTime: state.meetingTime + 10 })
   },
   {
     id: 'blockchain_pivot',
@@ -367,7 +367,7 @@ export const RANDOM_EVENTS: RandomEvent[] = [
     weight: 3,
     requires: { minBuzzwordLevel: 5 },
     sound: 'chaotic',
-    effect: (state) => ({ money: state.money + 5000, buzzwordLevel: state.buzzwordLevel + 5 })
+    effect: (state) => ({ money: state.money + Math.max(5000, state.money * 0.1), buzzwordLevel: state.buzzwordLevel + 5 })
   },
   {
     id: 'office_plant',
@@ -384,7 +384,7 @@ export const RANDOM_EVENTS: RandomEvent[] = [
     weight: 4,
     requires: { minMoney: 50000 },
     sound: 'bad',
-    effect: (state) => ({ money: Math.max(0, state.money - 10000) })
+    effect: (state) => ({ money: Math.max(0, state.money * 0.93) })
   },
   {
     id: 'influencer_deal',
@@ -392,7 +392,7 @@ export const RANDOM_EVENTS: RandomEvent[] = [
     icon: '📱',
     weight: 5,
     sound: 'bad',
-    effect: (state) => ({ money: Math.max(0, state.money - 2000) })
+    effect: (state) => ({ money: Math.max(0, state.money * 0.97) })
   },
   {
     id: 'award_won',
@@ -436,7 +436,7 @@ export const RANDOM_EVENTS: RandomEvent[] = [
     weight: 5,
     requires: { minBuzzwordLevel: 15 },
     sound: 'bad',
-    effect: (state) => ({ meetingTime: state.meetingTime + 30, money: Math.max(0, state.money - 500) })
+    effect: (state) => ({ meetingTime: state.meetingTime + 30, money: Math.max(0, state.money * 0.995) })
   },
   {
     id: 'tiktok_trend',
@@ -453,7 +453,7 @@ export const RANDOM_EVENTS: RandomEvent[] = [
     icon: '🧘',
     weight: 4,
     sound: 'chaotic',
-    effect: (state) => ({ money: Math.max(0, state.money - 5000), legalLiability: state.legalLiability + 50 })
+    effect: (state) => ({ money: Math.max(0, state.money * 0.96), legalLiability: state.legalLiability + 50 })
   },
   {
     id: 'acquihire',
@@ -463,9 +463,9 @@ export const RANDOM_EVENTS: RandomEvent[] = [
     requires: { minMoney: 100000 },
     sound: 'chaotic',
     effect: (state) => ({
-      money: Math.max(0, state.money - 10000),
+      money: Math.max(0, state.money * 0.94),
       employees: state.employees + 3,
-      autoMoney: state.autoMoney + 100
+      autoMoney: state.autoMoney * 1.15
     })
   }
 ]

@@ -16,6 +16,7 @@ export const UPGRADES: Upgrade[] = [
     name: 'Better Fingers',
     description: 'Train your clicking finger. Results may vary.',
     baseCost: 50,
+    costMultiplier: 1.2,
     tier: 1,
     icon: '👆',
     effect: {
@@ -52,6 +53,7 @@ export const UPGRADES: Upgrade[] = [
     name: 'More Electrolytes',
     description: "It's what plants crave! Refills to 100%.",
     baseCost: 150,
+    costMultiplier: 1.3,
     tier: 1,
     icon: '⚡',
     effect: {
@@ -79,6 +81,7 @@ export const UPGRADES: Upgrade[] = [
     name: 'Hire Manager',
     description: 'Someone to manage the interns managing themselves.',
     baseCost: 500,
+    costMultiplier: 1.18,
     tier: 2,
     icon: '👔',
     effect: {
@@ -196,6 +199,207 @@ export const UPGRADES: Upgrade[] = [
     effect: {
       autoMoney: 150,
       synergy: 40
+    }
+  },
+
+  // ============================================
+  // TIER 3.5: Growth Stage ($3k - $8k)
+  // ============================================
+  {
+    id: 'hire_hr',
+    name: 'Hire HR Department',
+    description: 'Protecting the company FROM employees since forever',
+    baseCost: 3000,
+    tier: 3,
+    icon: '👨‍💼',
+    effect: {
+      employees: 3,
+      autoMoney: 80,
+      legalLiability: -20
+    }
+  },
+  {
+    id: 'energy_drinks',
+    name: 'Energy Drink Supply',
+    description: 'Coffee is for quitters. Electrolytes drain 50% slower.',
+    baseCost: 3500,
+    tier: 3,
+    icon: '🥤',
+    effect: {
+      autoMoney: 100,
+      // Special: Slows electrolyte drain (handled in component)
+    }
+  },
+  {
+    id: 'hire_sales',
+    name: 'Hire Sales Team',
+    description: 'Sell things people don\'t need! Perfect capitalism.',
+    baseCost: 4000,
+    costMultiplier: 1.25,
+    tier: 3,
+    icon: '📞',
+    effect: {
+      employees: 5,
+      autoMoney: 120,
+      clickPower: 15
+    }
+  },
+  {
+    id: 'hire_marketers',
+    name: 'Hire Marketing Team',
+    description: 'Spend money to make money to spend on marketing!',
+    baseCost: 4500,
+    costMultiplier: 1.22,
+    tier: 3,
+    icon: '📢',
+    effect: {
+      employees: 4,
+      autoMoney: 140,
+      buzzwordLevel: 3
+    }
+  },
+  {
+    id: 'consultant',
+    name: 'Hire Expensive Consultant',
+    description: '$10k/hour to tell you what you already know',
+    baseCost: 5000,
+    tier: 3,
+    icon: '🎩',
+    effect: {
+      autoMoney: 180,
+      meetingTime: 20,
+      synergy: 50
+    }
+  },
+  {
+    id: 'offshore',
+    name: 'Offshore Tax Haven',
+    description: 'Taxes are for poor people!',
+    baseCost: 5500,
+    tier: 3,
+    icon: '🏝️',
+    effect: {
+      autoMoney: 200,
+      legalLiability: 150
+    }
+  },
+  {
+    id: 'accounting',
+    name: 'Creative Accounting',
+    description: 'The numbers mean whatever we want them to mean',
+    baseCost: 6000,
+    tier: 3,
+    icon: '📊',
+    effect: {
+      autoMoney: 220,
+      legalLiability: 80,
+      instantMoney: 5000
+    }
+  },
+  {
+    id: 'vr_office',
+    name: 'VR Office Space',
+    description: 'Like a real office, but with motion sickness!',
+    baseCost: 6500,
+    tier: 3,
+    icon: '🥽',
+    effect: {
+      autoMoney: 250,
+      buzzwordLevel: 4,
+      meetingTime: 15
+    }
+  },
+  {
+    id: 'synergy_team',
+    name: 'Dedicated Synergy Team',
+    description: 'Their only job is to create synergy (whatever that means)',
+    baseCost: 7000,
+    costMultiplier: 1.28,
+    tier: 3,
+    icon: '🔥',
+    effect: {
+      employees: 6,
+      autoMoney: 280,
+      synergy: 60,
+      clickPower: 20
+    }
+  },
+  {
+    id: 'meeting_room',
+    name: 'Executive Meeting Rooms',
+    description: 'Where decisions go to die',
+    baseCost: 7500,
+    tier: 3,
+    icon: '🚪',
+    effect: {
+      autoMoney: 300,
+      meetingTime: 30,
+      synergy: -15
+    }
+  },
+  {
+    id: 'stock_manipulation',
+    name: 'Stock Manipulation',
+    description: 'It\'s not illegal if you don\'t get caught!',
+    baseCost: 8000,
+    tier: 3,
+    icon: '📈',
+    effect: {
+      autoMoney: 350,
+      legalLiability: 200,
+      instantMoney: 8000
+    }
+  },
+  {
+    id: 'insider_trading',
+    name: 'Insider Trading Division',
+    description: 'Using information before it\'s public? That\'s just smart!',
+    baseCost: 8500,
+    tier: 3,
+    icon: '💼',
+    effect: {
+      autoMoney: 400,
+      legalLiability: 250,
+      clickPower: 30
+    }
+  },
+  {
+    id: 'automation',
+    name: 'Automate Everything',
+    description: 'Replace humans with robots. What could go wrong?',
+    baseCost: 9000,
+    tier: 3,
+    icon: '🤖',
+    effect: {
+      autoMoney: 450,
+      employees: -10,
+      clickPower: 40
+    }
+  },
+  {
+    id: 'golden_parachute',
+    name: 'Golden Parachute Clause',
+    description: 'Get paid millions even if you fail spectacularly',
+    baseCost: 9500,
+    tier: 3,
+    icon: '🪂',
+    effect: {
+      autoMoney: 500,
+      legalLiability: -50,
+      instantMoney: 10000
+    }
+  },
+  {
+    id: 'data_mining',
+    name: 'User Data Mining',
+    description: 'Your privacy is our profit!',
+    baseCost: 10000,
+    tier: 3,
+    icon: '⛏️',
+    effect: {
+      autoMoney: 600,
+      legalLiability: 300,
+      clickPower: 50
     }
   },
 

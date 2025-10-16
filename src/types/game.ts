@@ -11,6 +11,7 @@ export interface GameState {
 
   // Advanced resources
   buzzwordPoints: number  // Prestige currency
+  purchasedBPUpgrades: string[]  // Permanent BP shop purchases
   stockPrice: number      // Multiplier that fluctuates
   legalLiability: number  // Bad stat
   caffeine: number        // Temporary boost
@@ -47,6 +48,7 @@ export interface GameState {
   activeGlitches: string[]     // Currently active glitch effects
   secretsUnlocked: string[]    // Hidden mechanics discovered
   maxMoneyThisRun: number      // For tracking achievements
+  recentGlitchCount: number    // Glitches triggered in last 60 seconds (for diminishing returns)
 
   // Stats tracking
   totalClicks: number

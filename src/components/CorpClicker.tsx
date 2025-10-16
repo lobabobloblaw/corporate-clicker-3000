@@ -33,6 +33,7 @@ function CorpClickerInner() {
 
     // Advanced resources
     buzzwordPoints: 0,
+    purchasedBPUpgrades: [],
     stockPrice: 1.0,
     legalLiability: 0,
     caffeine: 0,
@@ -63,6 +64,7 @@ function CorpClickerInner() {
     activeGlitches: [],
     secretsUnlocked: [],
     maxMoneyThisRun: 0,
+    recentGlitchCount: 0,
 
     // Stats tracking
     totalClicks: 0,
@@ -91,10 +93,16 @@ function CorpClickerInner() {
       setGameState(prev => {
         // Apply synergy multipliers
         const multipliers = getSynergyMultipliers(prev.purchasedUpgrades)
-        const effectiveAutoMoney = prev.autoMoney * multipliers.autoMoneyMultiplier
+
+        // Electrolytes affect production: 100% = full power, 0% = 50% power
+        const electrolytePenalty = 0.5 + (prev.electrolytes / 100) * 0.5
+        const effectiveAutoMoney = prev.autoMoney * multipliers.autoMoneyMultiplier * electrolytePenalty
 
         const newMoney = prev.money + effectiveAutoMoney
         const newMaxMoney = Math.max(prev.maxMoneyThisRun, newMoney)
+
+        // Energy drinks slow electrolyte drain by 50%
+        const electrolyteDrain = prev.purchasedUpgrades.includes('energy_drinks') ? 0.25 : 0.5
 
         return {
           ...prev,
@@ -102,7 +110,7 @@ function CorpClickerInner() {
           lifetimeEarnings: Math.max(prev.lifetimeEarnings, newMoney),
           maxMoneyThisRun: newMaxMoney,
           synergy: Math.min(100, prev.synergy + prev.employees * 0.1),
-          electrolytes: Math.max(0, prev.electrolytes - 0.5),
+          electrolytes: Math.max(0, prev.electrolytes - electrolyteDrain),
           meetingTime: Math.max(0, prev.meetingTime - 0.5) // Meetings decay
         }
       })
@@ -169,23 +177,35 @@ function CorpClickerInner() {
           if (glitch) {
             showToastNotification(`⚡ GLITCH: ${glitch.name}`)
 
-            // Apply glitch effects
-            const glitchEffects = glitch.gameEffect(prev)
+            // Apply glitch effects with diminishing returns
+            const rawGlitchEffects = glitch.gameEffect(prev)
+
+            // Diminishing returns: Each recent glitch reduces money multipliers by 20%
+            const diminishingFactor = Math.pow(0.8, prev.recentGlitchCount)
+            const glitchEffects = { ...rawGlitchEffects }
+
+            // Apply diminishing returns to money gains
+            if (glitchEffects.money !== undefined && glitchEffects.money > prev.money) {
+              const moneyGain = glitchEffects.money - prev.money
+              glitchEffects.money = prev.money + (moneyGain * diminishingFactor)
+            }
 
             return {
               ...prev,
               ...glitchEffects,
               activeGlitches: [...prev.activeGlitches, glitch.id],
-              realityStability: Math.max(0, prev.realityStability - 5)
+              realityStability: Math.max(0, prev.realityStability - 5),
+              recentGlitchCount: prev.recentGlitchCount + 1
             }
           }
         }
 
-        // Decay glitch meter slowly
+        // Decay glitch meter slowly and decay recent glitch count
         return {
           ...prev,
           glitchMeter: Math.max(0, prev.glitchMeter - 0.5),
-          realityStability: Math.min(100, prev.realityStability + 0.1)
+          realityStability: Math.min(100, prev.realityStability + 0.1),
+          recentGlitchCount: Math.max(0, prev.recentGlitchCount - 0.016) // Decays fully in 60 seconds
         }
       })
     }, 1000)
@@ -255,7 +275,14 @@ function CorpClickerInner() {
 
       // Apply synergy multipliers
       const multipliers = getSynergyMultipliers(prev.purchasedUpgrades)
-      const effectiveClickPower = prev.clickPower * multipliers.clickPowerMultiplier
+
+      // Combo multiplier: 10+ combo = 2x, 25+ combo = 5x, 50+ combo = 10x
+      let comboMultiplier = 1
+      if (newCombo >= 50) comboMultiplier = 10
+      else if (newCombo >= 25) comboMultiplier = 5
+      else if (newCombo >= 10) comboMultiplier = 2
+
+      const effectiveClickPower = prev.clickPower * multipliers.clickPowerMultiplier * comboMultiplier
 
       const newMoney = prev.money + effectiveClickPower
       const newMaxMoney = Math.max(prev.maxMoneyThisRun, newMoney)
@@ -353,6 +380,7 @@ function CorpClickerInner() {
 
       // Preserve prestige stats
       buzzwordPoints: prev.buzzwordPoints + nextTier.buzzwordReward,
+      purchasedBPUpgrades: prev.purchasedBPUpgrades, // Permanent upgrades persist
       lifetimeEarnings: prev.lifetimeEarnings,
       bankruptcyCount: prev.bankruptcyCount + 1,
       unlockedAchievements: prev.unlockedAchievements,
@@ -366,6 +394,7 @@ function CorpClickerInner() {
       glitchMeter: 0,
       activeGlitches: [],
       maxMoneyThisRun: 0,
+      recentGlitchCount: 0,
       temporalFlux: prev.temporalFlux, // Keep temporal flux
       realityStability: 50, // Lower stability in higher tiers
 
