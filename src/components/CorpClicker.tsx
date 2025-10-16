@@ -1,7 +1,7 @@
 /**
  * Corporate Clicker 3000™
  * A satirical idle clicker game for Discord Activities
- * Redesigned for Discord's UI/UX patterns
+ * Optimized for no-scroll viewport experience
  */
 
 import { useState, useEffect, useCallback, memo } from 'react'
@@ -129,7 +129,7 @@ function CorpClickerInner() {
       name: 'Hire CEO',
       cost: 1000,
       effect: () => setAutoMoney(autoMoney + 50),
-      desc: '+50 money/sec (does nothing)'
+      desc: '+50 money/sec'
     },
     {
       name: 'BLOCKCHAIN',
@@ -138,7 +138,7 @@ function CorpClickerInner() {
         setMoney(money + 10000)
         checkAchievement('blockchain', 'Blockchain Master', true)
       },
-      desc: 'Instant +10k 🚀'
+      desc: '+10k instant 🚀'
     }
   ]
 
@@ -150,13 +150,13 @@ function CorpClickerInner() {
   }, [money])
 
   return (
-    <div className="min-h-screen bg-discord-bg-primary text-discord-text-normal font-sans">
+    <div className="h-screen bg-discord-bg-primary text-discord-text-normal font-sans overflow-hidden flex flex-col">
 
       {/* Toast Notification - Top Right */}
       {showToast && (
-        <div className="fixed top-4 right-4 z-50 animate-slide-up max-w-xs">
-          <div className="bg-discord-bg-secondary border-l-4 border-discord-blurple rounded-lg shadow-lg p-3">
-            <p className="text-sm font-medium text-discord-text-normal">
+        <div className="fixed top-3 right-3 z-50 animate-slide-up max-w-xs">
+          <div className="bg-discord-bg-secondary border-l-4 border-discord-blurple rounded-lg shadow-lg p-2.5">
+            <p className="text-xs font-medium text-discord-text-normal">
               {toastMessage}
             </p>
           </div>
@@ -193,188 +193,180 @@ function CorpClickerInner() {
         </div>
       )}
 
-      <div className="max-w-7xl mx-auto p-4 md:p-6">
-
-        {/* Header */}
-        <div className="text-center mb-6">
-          <h1 className="text-3xl md:text-5xl font-black text-white mb-2">
-            CORPORATE CLICKER 3000™
-          </h1>
-          {auth.user && (
-            <p className="text-base md:text-lg text-discord-green font-semibold flex items-center justify-center gap-2">
-              <span className="text-2xl">👑</span>
-              CEO: {auth.user.username}
-            </p>
-          )}
-          <p className="text-sm md:text-base text-discord-text-muted mt-1">
-            Now <span className="text-discord-yellow font-bold">{currentBuzzword}</span> your business! 🚀
+      {/* Compact Header */}
+      <div className="bg-discord-bg-secondary px-4 py-2.5 border-b border-discord-border">
+        <div className="flex items-center justify-between max-w-7xl mx-auto">
+          <div>
+            <h1 className="text-xl md:text-2xl font-black text-white">
+              CORPORATE CLICKER 3000™
+            </h1>
+            {auth.user && (
+              <p className="text-xs text-discord-green font-semibold flex items-center gap-1.5">
+                <span className="text-base">👑</span>
+                CEO: {auth.user.username}
+              </p>
+            )}
+          </div>
+          <p className="text-xs md:text-sm text-discord-text-muted hidden sm:block">
+            <span className="text-discord-yellow font-bold">{currentBuzzword}</span> your business! 🚀
           </p>
         </div>
+      </div>
 
-        {/* Desktop: Two Column, Mobile: Single Column */}
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-6">
+      {/* Main Content - No Scroll */}
+      <div className="flex-1 overflow-hidden">
+        <div className="h-full max-w-7xl mx-auto p-3 md:p-4">
 
-          {/* LEFT COLUMN - Stats, Income, Upgrades */}
-          <div className="space-y-4">
+          {/* Desktop: Two Column, Mobile: Single Column */}
+          <div className="h-full grid grid-cols-1 md:grid-cols-2 gap-3 md:gap-4">
 
-            {/* Stats Dashboard */}
-            <div className="grid grid-cols-2 gap-3">
-              {/* Money */}
-              <div className="bg-discord-bg-secondary rounded-discord-lg p-4 border-l-4 border-discord-green shadow-md">
-                <div className="text-2xl mb-1">💰</div>
-                <div className="text-xs text-discord-text-muted font-medium uppercase tracking-wide">Money</div>
-                <div className="text-2xl font-bold text-white">${money.toFixed(0)}</div>
-              </div>
+            {/* LEFT COLUMN - Stats, Income, Upgrades */}
+            <div className="flex flex-col gap-3 md:h-full overflow-hidden">
 
-              {/* Synergy */}
-              <div className="bg-discord-bg-secondary rounded-discord-lg p-4 border-l-4 border-discord-fuchsia shadow-md">
-                <div className="text-2xl mb-1">🔥</div>
-                <div className="text-xs text-discord-text-muted font-medium uppercase tracking-wide">Synergy</div>
-                <div className="text-2xl font-bold text-white">{synergy.toFixed(0)}%</div>
-              </div>
-
-              {/* Electrolytes */}
-              <div className="bg-discord-bg-secondary rounded-discord-lg p-4 border-l-4 border-discord-yellow shadow-md">
-                <div className="text-2xl mb-1">⚡</div>
-                <div className="text-xs text-discord-text-muted font-medium uppercase tracking-wide">Electrolytes</div>
-                <div className="text-2xl font-bold text-white">{electrolytes.toFixed(0)}%</div>
-              </div>
-
-              {/* Employees */}
-              <div className="bg-discord-bg-secondary rounded-discord-lg p-4 border-l-4 border-discord-blurple shadow-md">
-                <div className="text-2xl mb-1">👔</div>
-                <div className="text-xs text-discord-text-muted font-medium uppercase tracking-wide">Employees</div>
-                <div className="text-2xl font-bold text-white">{employees}</div>
-              </div>
-            </div>
-
-            {/* Income Display */}
-            <div className="bg-discord-bg-secondary rounded-discord-lg p-4 shadow-md">
-              <div className="flex flex-col sm:flex-row justify-between items-center gap-2">
-                <div className="flex items-center gap-2">
-                  <span className="text-discord-green text-lg">💸</span>
-                  <span className="text-discord-text-normal font-semibold">
-                    +${autoMoney}/sec
-                  </span>
+              {/* Stats Dashboard - Compact */}
+              <div className="grid grid-cols-2 gap-2">
+                {/* Money */}
+                <div className="bg-discord-bg-secondary rounded-lg p-2.5 border-l-4 border-discord-green">
+                  <div className="text-lg mb-0.5">💰</div>
+                  <div className="text-[10px] text-discord-text-muted font-medium uppercase tracking-wide">Money</div>
+                  <div className="text-lg font-bold text-white">${money.toFixed(0)}</div>
                 </div>
-                <div className="flex items-center gap-2">
-                  <span className="text-discord-yellow text-lg">👆</span>
-                  <span className="text-discord-text-normal font-semibold">
-                    ${clickPower}/click
-                  </span>
+
+                {/* Synergy */}
+                <div className="bg-discord-bg-secondary rounded-lg p-2.5 border-l-4 border-discord-fuchsia">
+                  <div className="text-lg mb-0.5">🔥</div>
+                  <div className="text-[10px] text-discord-text-muted font-medium uppercase tracking-wide">Synergy</div>
+                  <div className="text-lg font-bold text-white">{synergy.toFixed(0)}%</div>
+                </div>
+
+                {/* Electrolytes */}
+                <div className="bg-discord-bg-secondary rounded-lg p-2.5 border-l-4 border-discord-yellow">
+                  <div className="text-lg mb-0.5">⚡</div>
+                  <div className="text-[10px] text-discord-text-muted font-medium uppercase tracking-wide">Electrolytes</div>
+                  <div className="text-lg font-bold text-white">{electrolytes.toFixed(0)}%</div>
+                </div>
+
+                {/* Employees */}
+                <div className="bg-discord-bg-secondary rounded-lg p-2.5 border-l-4 border-discord-blurple">
+                  <div className="text-lg mb-0.5">👔</div>
+                  <div className="text-[10px] text-discord-text-muted font-medium uppercase tracking-wide">Employees</div>
+                  <div className="text-lg font-bold text-white">{employees}</div>
                 </div>
               </div>
-            </div>
 
-            {/* Upgrades */}
-            <div className="bg-discord-bg-secondary rounded-discord-lg p-4 shadow-md">
-              <h2 className="text-xl font-bold text-white mb-3 flex items-center gap-2">
-                <span>🛒</span>
-                <span>Upgrades</span>
-              </h2>
-              <div className="space-y-2">
-                {upgrades.map((upgrade, i) => (
-                  <button
-                    key={i}
-                    onClick={() => buyUpgrade(upgrade)}
-                    disabled={money < upgrade.cost}
-                    className={`w-full text-left p-3 rounded-lg transition-all min-h-touch ${
-                      money >= upgrade.cost
-                        ? 'bg-discord-green hover:bg-green-600 active:scale-98 cursor-pointer shadow-sm'
-                        : 'bg-discord-bg-tertiary cursor-not-allowed opacity-60'
-                    }`}
-                  >
-                    <div className="flex justify-between items-start mb-1">
-                      <div className="font-bold text-white text-sm">{upgrade.name}</div>
-                      <div className="text-white font-semibold text-sm">${upgrade.cost}</div>
-                    </div>
-                    <div className="text-xs text-discord-text-muted">{upgrade.desc}</div>
-                  </button>
-                ))}
-              </div>
-            </div>
-          </div>
-
-          {/* RIGHT COLUMN - Clicker, Achievements, Tips */}
-          <div className="space-y-4">
-
-            {/* Main Clicker Button */}
-            <div className="bg-discord-bg-secondary rounded-discord-lg p-6 shadow-md flex items-center justify-center">
-              <button
-                onClick={handleClick}
-                className="bg-gradient-to-br from-discord-blurple to-purple-600 hover:from-blue-500 hover:to-purple-500 rounded-full w-48 h-48 md:w-56 md:h-56 shadow-2xl active:scale-95 transition-all flex flex-col items-center justify-center"
-              >
-                <div className="text-7xl md:text-8xl mb-2">💵</div>
-                <div className="text-white font-bold text-lg">CLICK ME!</div>
-                <div className="text-discord-yellow font-semibold text-sm">+${clickPower}</div>
-              </button>
-            </div>
-
-            {/* Achievements */}
-            <div className="bg-discord-bg-secondary rounded-discord-lg p-4 shadow-md">
-              <h2 className="text-xl font-bold text-white mb-3 flex items-center gap-2">
-                <span>🏆</span>
-                <span>Achievements</span>
-              </h2>
-              <div className="bg-discord-bg-tertiary rounded-lg p-3 min-h-[80px]">
-                {achievements.length === 0 ? (
-                  <p className="text-center text-discord-text-muted text-sm">
-                    None yet! Keep clicking!
-                  </p>
-                ) : (
-                  <div className="flex flex-wrap gap-2">
-                    {achievements.map((ach, i) => (
-                      <span
-                        key={i}
-                        className="bg-discord-yellow text-gray-900 font-bold px-3 py-1 rounded-full text-xs uppercase"
-                      >
-                        🏆 {ach}
-                      </span>
-                    ))}
+              {/* Income Display - Compact */}
+              <div className="bg-discord-bg-secondary rounded-lg p-2.5">
+                <div className="flex justify-between items-center text-xs">
+                  <div className="flex items-center gap-1.5">
+                    <span className="text-discord-green">💸</span>
+                    <span className="text-discord-text-normal font-semibold">
+                      +${autoMoney}/sec
+                    </span>
                   </div>
-                )}
+                  <div className="flex items-center gap-1.5">
+                    <span className="text-discord-yellow">👆</span>
+                    <span className="text-discord-text-normal font-semibold">
+                      ${clickPower}/click
+                    </span>
+                  </div>
+                </div>
+              </div>
+
+              {/* Upgrades - Scrollable with Fixed Height */}
+              <div className="bg-discord-bg-secondary rounded-lg p-3 flex-1 flex flex-col overflow-hidden">
+                <h2 className="text-base font-bold text-white mb-2 flex items-center gap-1.5">
+                  <span>🛒</span>
+                  <span>Upgrades</span>
+                </h2>
+                <div className="space-y-1.5 overflow-y-auto pr-1 flex-1 scrollbar-thin scrollbar-thumb-discord-border scrollbar-track-transparent">
+                  {upgrades.map((upgrade, i) => (
+                    <button
+                      key={i}
+                      onClick={() => buyUpgrade(upgrade)}
+                      disabled={money < upgrade.cost}
+                      className={`w-full text-left p-2 rounded-lg transition-all ${
+                        money >= upgrade.cost
+                          ? 'bg-discord-green hover:bg-green-600 active:scale-98 cursor-pointer'
+                          : 'bg-discord-bg-tertiary cursor-not-allowed opacity-60'
+                      }`}
+                    >
+                      <div className="flex justify-between items-start mb-0.5">
+                        <div className="font-bold text-white text-xs">{upgrade.name}</div>
+                        <div className="text-white font-semibold text-xs">${upgrade.cost}</div>
+                      </div>
+                      <div className="text-[10px] text-discord-text-muted">{upgrade.desc}</div>
+                    </button>
+                  ))}
+                </div>
               </div>
             </div>
 
-            {/* Pro Tips */}
-            <div className="bg-discord-bg-secondary rounded-discord-lg p-4 shadow-md">
-              <h3 className="text-lg font-bold text-white mb-3 flex items-center gap-2">
-                <span>💡</span>
-                <span>Pro Tips</span>
-              </h3>
-              <div className="bg-discord-bg-tertiary rounded-lg p-3">
-                <ul className="text-sm space-y-2 text-discord-text-muted">
-                  <li className="flex items-start gap-2">
-                    <span className="text-discord-green">✓</span>
-                    <span>Click the big money button</span>
-                  </li>
-                  <li className="flex items-start gap-2">
-                    <span className="text-discord-green">✓</span>
-                    <span>Buy upgrades to get more money</span>
-                  </li>
-                  <li className="flex items-start gap-2">
-                    <span className="text-discord-green">✓</span>
-                    <span>More money = more better</span>
-                  </li>
-                  <li className="flex items-start gap-2">
-                    <span className="text-discord-green">✓</span>
-                    <span>Keep electrolytes high or else</span>
-                  </li>
-                  <li className="flex items-start gap-2">
-                    <span className="text-discord-green">✓</span>
-                    <span>Close popup ads for free money</span>
-                  </li>
-                </ul>
+            {/* RIGHT COLUMN - Clicker, Achievements, Tips */}
+            <div className="flex flex-col gap-3 md:h-full">
+
+              {/* Main Clicker Button */}
+              <div className="bg-discord-bg-secondary rounded-lg p-4 flex items-center justify-center">
+                <button
+                  onClick={handleClick}
+                  className="bg-gradient-to-br from-discord-blurple to-purple-600 hover:from-blue-500 hover:to-purple-500 rounded-full w-40 h-40 md:w-44 md:h-44 shadow-2xl active:scale-95 transition-all flex flex-col items-center justify-center"
+                >
+                  <div className="text-6xl md:text-7xl mb-1">💵</div>
+                  <div className="text-white font-bold text-base">CLICK ME!</div>
+                  <div className="text-discord-yellow font-semibold text-xs">+${clickPower}</div>
+                </button>
+              </div>
+
+              {/* Achievements - Compact */}
+              <div className="bg-discord-bg-secondary rounded-lg p-3 flex-1 overflow-hidden flex flex-col">
+                <h2 className="text-base font-bold text-white mb-2 flex items-center gap-1.5">
+                  <span>🏆</span>
+                  <span>Achievements</span>
+                </h2>
+                <div className="bg-discord-bg-tertiary rounded-lg p-2 flex-1 overflow-y-auto scrollbar-thin scrollbar-thumb-discord-border scrollbar-track-transparent">
+                  {achievements.length === 0 ? (
+                    <p className="text-center text-discord-text-muted text-xs">
+                      None yet! Keep clicking!
+                    </p>
+                  ) : (
+                    <div className="flex flex-wrap gap-1.5">
+                      {achievements.map((ach, i) => (
+                        <span
+                          key={i}
+                          className="bg-discord-yellow text-gray-900 font-bold px-2 py-0.5 rounded-full text-[10px] uppercase"
+                        >
+                          🏆 {ach}
+                        </span>
+                      ))}
+                    </div>
+                  )}
+                </div>
+              </div>
+
+              {/* Pro Tips - Compact */}
+              <div className="bg-discord-bg-secondary rounded-lg p-3">
+                <h3 className="text-sm font-bold text-white mb-2 flex items-center gap-1.5">
+                  <span>💡</span>
+                  <span>Pro Tips</span>
+                </h3>
+                <div className="bg-discord-bg-tertiary rounded-lg p-2">
+                  <ul className="text-[10px] space-y-1 text-discord-text-muted">
+                    <li className="flex items-start gap-1.5">
+                      <span className="text-discord-green text-xs">✓</span>
+                      <span>Click the big money button</span>
+                    </li>
+                    <li className="flex items-start gap-1.5">
+                      <span className="text-discord-green text-xs">✓</span>
+                      <span>Buy upgrades for more money</span>
+                    </li>
+                    <li className="flex items-start gap-1.5">
+                      <span className="text-discord-green text-xs">✓</span>
+                      <span>Keep electrolytes high or else</span>
+                    </li>
+                  </ul>
+                </div>
               </div>
             </div>
           </div>
-        </div>
-
-        {/* Footer Warning */}
-        <div className="text-center mt-6 text-discord-text-muted text-xs">
-          <p className="font-medium">
-            ⚠️ Game balance: None | Fun level: Maximum | Sense: Zero ⚠️
-          </p>
         </div>
       </div>
     </div>
