@@ -203,13 +203,14 @@ export const UPGRADES: Upgrade[] = [
   },
 
   // ============================================
-  // TIER 3.5: Growth Stage ($3k - $8k)
+  // TIER 3.5: Growth Stage ($12k - $75k)
+  // Rebalanced: Upgrades should pay for themselves in 90-120 seconds
   // ============================================
   {
     id: 'hire_hr',
     name: 'Hire HR Department',
     description: 'Protecting the company FROM employees since forever',
-    baseCost: 3000,
+    baseCost: 12000,
     tier: 3,
     icon: '👨‍💼',
     effect: {
@@ -222,7 +223,7 @@ export const UPGRADES: Upgrade[] = [
     id: 'energy_drinks',
     name: 'Energy Drink Supply',
     description: 'Coffee is for quitters. Electrolytes drain 50% slower.',
-    baseCost: 3500,
+    baseCost: 15000,
     tier: 3,
     icon: '🥤',
     effect: {
@@ -234,7 +235,7 @@ export const UPGRADES: Upgrade[] = [
     id: 'hire_sales',
     name: 'Hire Sales Team',
     description: 'Sell things people don\'t need! Perfect capitalism.',
-    baseCost: 4000,
+    baseCost: 18000,
     costMultiplier: 1.25,
     tier: 3,
     icon: '📞',
@@ -248,7 +249,7 @@ export const UPGRADES: Upgrade[] = [
     id: 'hire_marketers',
     name: 'Hire Marketing Team',
     description: 'Spend money to make money to spend on marketing!',
-    baseCost: 4500,
+    baseCost: 22000,
     costMultiplier: 1.22,
     tier: 3,
     icon: '📢',
@@ -262,7 +263,7 @@ export const UPGRADES: Upgrade[] = [
     id: 'consultant',
     name: 'Hire Expensive Consultant',
     description: '$10k/hour to tell you what you already know',
-    baseCost: 5000,
+    baseCost: 28000,
     tier: 3,
     icon: '🎩',
     effect: {
@@ -275,7 +276,7 @@ export const UPGRADES: Upgrade[] = [
     id: 'offshore',
     name: 'Offshore Tax Haven',
     description: 'Taxes are for poor people!',
-    baseCost: 5500,
+    baseCost: 35000,
     tier: 3,
     icon: '🏝️',
     effect: {
@@ -287,20 +288,20 @@ export const UPGRADES: Upgrade[] = [
     id: 'accounting',
     name: 'Creative Accounting',
     description: 'The numbers mean whatever we want them to mean',
-    baseCost: 6000,
+    baseCost: 42000,
     tier: 3,
     icon: '📊',
     effect: {
       autoMoney: 220,
       legalLiability: 80,
-      instantMoney: 5000
+      instantMoney: 8000
     }
   },
   {
     id: 'vr_office',
     name: 'VR Office Space',
     description: 'Like a real office, but with motion sickness!',
-    baseCost: 6500,
+    baseCost: 48000,
     tier: 3,
     icon: '🥽',
     effect: {
@@ -313,7 +314,7 @@ export const UPGRADES: Upgrade[] = [
     id: 'synergy_team',
     name: 'Dedicated Synergy Team',
     description: 'Their only job is to create synergy (whatever that means)',
-    baseCost: 7000,
+    baseCost: 55000,
     costMultiplier: 1.28,
     tier: 3,
     icon: '🔥',
@@ -328,7 +329,7 @@ export const UPGRADES: Upgrade[] = [
     id: 'meeting_room',
     name: 'Executive Meeting Rooms',
     description: 'Where decisions go to die',
-    baseCost: 7500,
+    baseCost: 60000,
     tier: 3,
     icon: '🚪',
     effect: {
@@ -341,20 +342,20 @@ export const UPGRADES: Upgrade[] = [
     id: 'stock_manipulation',
     name: 'Stock Manipulation',
     description: 'It\'s not illegal if you don\'t get caught!',
-    baseCost: 8000,
+    baseCost: 65000,
     tier: 3,
     icon: '📈',
     effect: {
       autoMoney: 350,
       legalLiability: 200,
-      instantMoney: 8000
+      instantMoney: 12000
     }
   },
   {
     id: 'insider_trading',
     name: 'Insider Trading Division',
     description: 'Using information before it\'s public? That\'s just smart!',
-    baseCost: 8500,
+    baseCost: 70000,
     tier: 3,
     icon: '💼',
     effect: {
@@ -367,7 +368,7 @@ export const UPGRADES: Upgrade[] = [
     id: 'automation',
     name: 'Automate Everything',
     description: 'Replace humans with robots. What could go wrong?',
-    baseCost: 9000,
+    baseCost: 75000,
     tier: 3,
     icon: '🤖',
     effect: {
@@ -380,20 +381,20 @@ export const UPGRADES: Upgrade[] = [
     id: 'golden_parachute',
     name: 'Golden Parachute Clause',
     description: 'Get paid millions even if you fail spectacularly',
-    baseCost: 9500,
+    baseCost: 80000,
     tier: 3,
     icon: '🪂',
     effect: {
       autoMoney: 500,
       legalLiability: -50,
-      instantMoney: 10000
+      instantMoney: 15000
     }
   },
   {
     id: 'data_mining',
     name: 'User Data Mining',
     description: 'Your privacy is our profit!',
-    baseCost: 10000,
+    baseCost: 90000,
     tier: 3,
     icon: '⛏️',
     effect: {

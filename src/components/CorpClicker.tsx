@@ -147,24 +147,31 @@ function CorpClickerInner() {
   // ============================================
   useEffect(() => {
     const achievementInterval = setInterval(() => {
-      const { newAchievements, updatedUnlocked } = checkAchievements(
-        gameState,
-        gameState.unlockedAchievements
-      )
+      setGameState(prev => {
+        const { newAchievements, updatedUnlocked } = checkAchievements(
+          prev,
+          prev.unlockedAchievements
+        )
 
-      if (newAchievements.length > 0) {
-        setGameState(prev => ({
-          ...prev,
-          unlockedAchievements: updatedUnlocked
-        }))
+        if (newAchievements.length > 0) {
+          // Show toast for each new achievement
+          newAchievements.forEach(ach => {
+            setToastMessage(`🏆 Achievement: ${ach.name}`)
+            setShowToast(true)
+            setTimeout(() => setShowToast(false), 3500)
+          })
 
-        newAchievements.forEach(ach => {
-          showToastNotification(`🏆 Achievement: ${ach.name}`)
-        })
-      }
+          return {
+            ...prev,
+            unlockedAchievements: updatedUnlocked
+          }
+        }
+
+        return prev
+      })
     }, 2000) // Check every 2 seconds
     return () => clearInterval(achievementInterval)
-  }, [gameState])
+  }, [])
 
   // ============================================
   // GLITCH FARMING SYSTEM
