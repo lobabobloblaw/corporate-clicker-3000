@@ -438,7 +438,7 @@ function CorpClickerInner() {
   // RENDER
   // ============================================
   return (
-    <div className={`h-screen max-h-screen bg-discord-bg-primary text-discord-text-normal font-sans overflow-hidden flex flex-col touch-action-none reality-${gameState.ascensionTier}`}>
+    <div className={`min-h-screen md:h-screen md:max-h-screen bg-discord-bg-primary text-discord-text-normal font-sans md:overflow-hidden flex flex-col touch-action-manipulation reality-${gameState.ascensionTier}`}>
 
       {/* Toast Notification */}
       {showToast && (
@@ -515,14 +515,14 @@ function CorpClickerInner() {
       </div>
 
       {/* Main Content */}
-      <div className="flex-1 overflow-hidden">
-        <div className="h-full max-w-7xl mx-auto p-2 md:p-4">
+      <div className="flex-1 overflow-y-auto md:overflow-hidden">
+        <div className="md:h-full max-w-7xl mx-auto p-2 md:p-4 pb-20 md:pb-4">
 
           {/* Desktop: Two Column, Mobile: Single Column */}
-          <div className="h-full grid grid-cols-1 md:grid-cols-2 gap-2 md:gap-4">
+          <div className="md:h-full grid grid-cols-1 md:grid-cols-2 gap-2 md:gap-4">
 
             {/* LEFT COLUMN */}
-            <div className="flex flex-col gap-2 md:gap-3 md:h-full overflow-hidden">
+            <div className="flex flex-col gap-2 md:gap-3 md:h-full md:overflow-hidden">
 
               {/* Big Money Display - Mobile Only */}
               <div className="md:hidden bg-discord-bg-secondary rounded-lg p-3 border-l-4 border-discord-green">
@@ -666,12 +666,12 @@ function CorpClickerInner() {
               )}
 
               {/* Upgrades */}
-              <div className="bg-discord-bg-secondary rounded-lg p-2 md:p-3 flex-1 flex flex-col overflow-hidden">
+              <div className="bg-discord-bg-secondary rounded-lg p-2 md:p-3 md:flex-1 flex flex-col md:overflow-hidden">
                 <h2 className="text-sm md:text-base font-bold text-white mb-1.5 md:mb-2 flex items-center gap-1.5">
                   <span>🛒</span>
                   <span>Upgrades ({availableUpgrades.length})</span>
                 </h2>
-                <div className="space-y-1.5 overflow-y-auto pr-1 flex-1 scrollbar-thin scrollbar-thumb-discord-border scrollbar-track-transparent">
+                <div className="space-y-1.5 md:overflow-y-auto pr-1 md:flex-1 scrollbar-thin scrollbar-thumb-discord-border scrollbar-track-transparent">
                   {availableUpgrades.length === 0 ? (
                     <p className="text-center text-discord-text-muted text-xs py-4">
                       You bought everything! 🎉
@@ -725,12 +725,12 @@ function CorpClickerInner() {
               </div>
 
               {/* Achievements */}
-              <div className="bg-discord-bg-secondary rounded-lg p-2 md:p-3 flex-1 overflow-hidden flex flex-col">
+              <div className="bg-discord-bg-secondary rounded-lg p-2 md:p-3 md:flex-1 md:overflow-hidden flex flex-col">
                 <h2 className="text-sm md:text-base font-bold text-white mb-1.5 md:mb-2 flex items-center gap-1.5">
                   <span>🏆</span>
                   <span>Achievements ({gameState.unlockedAchievements.length}/{ACHIEVEMENTS.filter(a => !a.hidden).length})</span>
                 </h2>
-                <div className="bg-discord-bg-tertiary rounded-lg p-2 flex-1 overflow-y-auto scrollbar-thin scrollbar-thumb-discord-border scrollbar-track-transparent">
+                <div className="bg-discord-bg-tertiary rounded-lg p-2 md:flex-1 md:overflow-y-auto scrollbar-thin scrollbar-thumb-discord-border scrollbar-track-transparent min-h-[200px]">
                   {gameState.unlockedAchievements.length === 0 ? (
                     <p className="text-center text-discord-text-muted text-xs">
                       None yet! Keep clicking!
